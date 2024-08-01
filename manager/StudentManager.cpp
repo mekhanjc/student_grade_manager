@@ -37,11 +37,11 @@ void StudentManager::showMenu() {
 		break;
 	case 6:
 		cout << "프로그램 종료합니다." << endl;
-		exit;
+		exit(0);
 		break;
 	default:
 		cout << "잘못 선택 하셨습니다. 프로그램 종료합니다." << endl;
-		exit;
+		exit(0);
 	}
 }
 StudentManager::StudentManager() {
@@ -70,17 +70,20 @@ void StudentManager::addStudent() {
 
 		cout << "문/이과를 선택하세요. -> 1.문과  2.이과   : ";
 		cin >> input;
-		cout << "이름을 입력하세요 : ";
-		cin >> name;
 		if (input == 1) {
+			cout << "이름을 입력하세요 : ";
+			cin >> name;
 			studentArtList.push_back(make_shared<StudentArt>(name, subject[input - 1], studentArtList.size() + studentSciList.size() + 1));
 		}
 		else if (input == 2) {
+			cout << "이름을 입력하세요 : ";
+			cin >> name;
 			studentSciList.push_back(make_shared<StudentSci>(name, subject[input - 1], studentArtList.size() + studentSciList.size() + 1));
 		}
 		else {
-			cout << "잘못 입력하셨습니다." << endl;
-			showMenu();
+			cout << "잘못 선택 하셨습니다. 프로그램 종료합니다." << endl;
+			exit(0);
+			break;
 		}
 	}
 }
