@@ -9,7 +9,6 @@ class StudentManager {
 	vector<shared_ptr<StudentArt>> studentArtList;
 	vector<shared_ptr<StudentSci>> studentSciList;
 public:
-	void showMenu();
 	StudentManager();
 	void addStudent();
 	void editStudent(int id);
