@@ -1,11 +1,11 @@
-#include <iostream>
+ï»¿#include <iostream>
 #include "StudentManager.h"
 
 void StudentManager::showMenu() {
 	int num;
-	cout << "¹ØÀÇ ½ÇÇà ¸ñ·ÏÁß ¼±ÅÃÇØÁÖ¼¼¿ä." << endl;
+	cout << "ë°‘ì˜ ì‹¤í–‰ ëª©ë¡ì¤‘ ì„ íƒí•´ì£¼ì„¸ìš”." << endl;
 	cout << "------------------------------" << endl;
-	cout << "1.ÇĞ»ıµî·Ï 2.¼ºÀûÁ¶È¸ 3.ÀüÃ¼¼ºÀûÁ¶È¸ 4.¼ºÀûÀÔ·Â 5.¼ºÀû¼öÁ¤ 6.¼ºÀû»èÁ¦ 7.Á¾·á" << endl;
+	cout << "1.í•™ìƒë“±ë¡ 2.ì„±ì ì¡°íšŒ 3.ì „ì²´ì„±ì ì¡°íšŒ 4.ì„±ì ì…ë ¥ 5.ì„±ì ìˆ˜ì • 6.ì„±ì ì‚­ì œ 7.ì¢…ë£Œ" << endl;
 	cin >> num;
 	switch (num) {
 	case 1:
@@ -13,27 +13,27 @@ void StudentManager::showMenu() {
 		break;
 	case 2:
 		int id;
-		cout << "ÇĞ¹ø ID ÀÔ·Â : ";
+		cout << "í•™ë²ˆ ID ì…ë ¥ : ";
 		cin >> id;
 		showStudent(id);
 		break;
 	case 3:
-		cout << "ÀüÃ¼ ¼ºÀû Á¶È¸ÇÕ´Ï´Ù." << endl;
+		cout << "ì „ì²´ ì„±ì  ì¡°íšŒí•©ë‹ˆë‹¤." << endl;
 		showAllStudent();
 		break;
 	case 4:
-		cout << "¼ºÀûÀ» ÀÔ·ÂÇÕ´Ï´Ù. " << endl;
+		cout << "ì„±ì ì„ ì…ë ¥í•©ë‹ˆë‹¤. " << endl;
 		break;
 	case 5:
-		cout << "¼ºÀûÀ» ¼öÁ¤ÇÕ´Ï´Ù. " << endl;
+		cout << "ì„±ì ì„ ìˆ˜ì •í•©ë‹ˆë‹¤. " << endl;
 	case 6:
-		cout << "¼ºÀûÀ» »èÁ¦ÇÕ´Ï´Ù. " << endl;
+		cout << "ì„±ì ì„ ì‚­ì œí•©ë‹ˆë‹¤. " << endl;
 		break;
 	case 7:
-		cout << "ÇÁ·Î±×·¥ Á¾·áÇÕ´Ï´Ù." << endl;
+		cout << "í”„ë¡œê·¸ë¨ ì¢…ë£Œí•©ë‹ˆë‹¤." << endl;
 		break;
 	default:
-		cout << "Àß¸ø ¼±ÅÃ ÇÏ¼Ì½À´Ï´Ù. ÇÁ·Î±×·¥ Á¾·áÇÕ´Ï´Ù." << endl;
+		cout << "ì˜ëª» ì„ íƒ í•˜ì…¨ìŠµë‹ˆë‹¤. í”„ë¡œê·¸ë¨ ì¢…ë£Œí•©ë‹ˆë‹¤." << endl;
 		
 	}
 }
@@ -41,17 +41,17 @@ void StudentManager::showMenu() {
 void StudentManager::addStudent() {
 
 	int input;
-	string subject[2] = { "¹®°ú", "ÀÌ°ú" };
+	string subject[2] = { "ë¬¸ê³¼", "ì´ê³¼" };
 
 	while (true) {
-		cout << "ÇĞ»ıÀ» µî·ÏÇÕ´Ï´Ù -> 1.ÇĞ»ı µî·Ï  2.Á¾·á  3.ÃÊ±â¸Ş´º  : ";
+		cout << "í•™ìƒì„ ë“±ë¡í•©ë‹ˆë‹¤ -> 1.í•™ìƒ ë“±ë¡  2.ì¢…ë£Œ  3.ì´ˆê¸°ë©”ë‰´  : ";
 		cin >> input;
 		if (input == 2) {
-			cout << "Á¾·áÇÕ´Ï´Ù." << endl;
+			cout << "ì¢…ë£Œí•©ë‹ˆë‹¤." << endl;
 			break;
 		}
 		else if (input > 3) {
-			cout << "Àß¸ø ÀÔ·ÂÇÏ¼Ì½À´Ï´Ù." << endl;
+			cout << "ì˜ëª» ì…ë ¥í•˜ì…¨ìŠµë‹ˆë‹¤." << endl;
 			continue;
 		}
 		else if (input == 3) {
@@ -62,9 +62,9 @@ void StudentManager::addStudent() {
 		string name;
 		
 		
-		cout << "¹®/ÀÌ°ú¸¦ ¼±ÅÃÇÏ¼¼¿ä. -> 1.¹®°ú  2.ÀÌ°ú   : ";
+		cout << "ë¬¸/ì´ê³¼ë¥¼ ì„ íƒí•˜ì„¸ìš”. -> 1.ë¬¸ê³¼  2.ì´ê³¼   : ";
 		cin >> input;
-		cout << "ÀÌ¸§À» ÀÔ·ÂÇÏ¼¼¿ä : ";
+		cout << "ì´ë¦„ì„ ì…ë ¥í•˜ì„¸ìš” : ";
 		cin >> name;
 
 		if (input == 1) {
@@ -74,7 +74,7 @@ void StudentManager::addStudent() {
 			studentList.push_back(make_shared<Student>(name, subject[input - 1], this->studentList.size() + 1));
 		}
 		else {
-			cout << "Àß¸ø ÀÔ·ÂÇÏ¼Ì½À´Ï´Ù." << endl;
+			cout << "ì˜ëª» ì…ë ¥í•˜ì…¨ìŠµë‹ˆë‹¤." << endl;
 			showMenu();
 		}
 	}
@@ -86,24 +86,24 @@ void StudentManager::addStudent() {
 void StudentManager::showStudent(int id) {
 	for (auto it : studentList) {
 		if (it->getId() == id) {
-			if (it->getSubject() == "ÀÌ°ú") {
+			if (it->getSubject() == "ì´ê³¼") {
 				auto studentSci = dynamic_cast<StudentSci*>(it.get());
 				if (studentSci) {
-					cout << "°úÇĞ : " << studentSci->getScience() << endl;
-					cout << "¼öÇĞ : " << studentSci->getMath() << endl;
+					cout << "ê³¼í•™ : " << studentSci->getScience() << endl;
+					cout << "ìˆ˜í•™ : " << studentSci->getMath() << endl;
 				}
 			}
 			else {
 				auto studentArt = dynamic_cast<StudentArt*>(it.get());
 				if (studentArt) {
-					cout << "°æÁ¦ : " << studentArt->getEconomics() << endl;
-					cout << "¹Ì¼ú : " << studentArt->getArts() << endl;
+					cout << "ê²½ì œ : " << studentArt->getEconomics() << endl;
+					cout << "ë¯¸ìˆ  : " << studentArt->getArts() << endl;
 				}
 			}
 		}
 		else {
-			cout << "µî·ÏµÈ ÇĞ»ıÀÌ ¾ø½À´Ï´Ù. " << endl;
-			cout << "ÃÊ±â¸Ş´º·Î µ¹¾Æ°©´Ï´Ù. " << endl;
+			cout << "ë“±ë¡ëœ í•™ìƒì´ ì—†ìŠµë‹ˆë‹¤. " << endl;
+			cout << "ì´ˆê¸°ë©”ë‰´ë¡œ ëŒì•„ê°‘ë‹ˆë‹¤. " << endl;
 			showMenu();
 			break;
 		}
@@ -112,18 +112,18 @@ void StudentManager::showStudent(int id) {
 
 void StudentManager::showAllStudent() {
 	for (auto it : studentList) {
-		if (it->getSubject() == "ÀÌ°ú") {
+		if (it->getSubject() == "ì´ê³¼") {
 			auto studentSci = dynamic_cast<StudentSci*>(it.get());
 			if (studentSci) {
-				cout << "°úÇĞ : " << studentSci->getScience() << endl;
-				cout << "¼öÇĞ : " << studentSci->getMath() << endl;
+				cout << "ê³¼í•™ : " << studentSci->getScience() << endl;
+				cout << "ìˆ˜í•™ : " << studentSci->getMath() << endl;
 			}
 		}
 		else {
 			auto studentArt = dynamic_cast<StudentArt*>(it.get());
 			if (studentArt) {
-				cout << "°æÁ¦ : " << studentArt->getEconomics() << endl;
-				cout << "¹Ì¼ú : " << studentArt->getArts() << endl;
+				cout << "ê²½ì œ : " << studentArt->getEconomics() << endl;
+				cout << "ë¯¸ìˆ  : " << studentArt->getArts() << endl;
 			}
 		}
 
