@@ -1,4 +1,4 @@
-#include "student.h"
+﻿#include "student.h"
 
 Student::Student(string name, string subject, int id) {
 	this->name = name;

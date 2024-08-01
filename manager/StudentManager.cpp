@@ -1,54 +1,94 @@
-#include <iostream>
+ï»¿#include <iostream>
 #include "StudentManager.h"
 
-
+void StudentManager::showMenu() {
+	int num;
+	cout << "------------------------------" << endl;
+	cout << "ë°‘ì˜ ì‹¤í–‰ ëª©ë¡ì¤‘ ì„ íƒí•´ì£¼ì„¸ìš”." << endl;
+	cout << "------------------------------" << endl;
+	cout << "1.í•™ìƒë“±ë¡ 2.ì„±ì ì¡°íšŒ 3.ì „ì²´ì„±ì ì¡°íšŒ 4.ì„±ì ìž…ë ¥ 5.ì„±ì ìˆ˜ì • 6.ì„±ì ì‚­ì œ 7.ì¢…ë£Œ" << endl;
+	cin >> num;
+	switch (num) {
+	case 1:
+		addStudent();
+		break;
+	case 2:
+		int id;
+		cout << "í•™ë²ˆ ID ìž…ë ¥ : ";
+		cin >> id;
+		showStudent(id);
+		break;
+	case 3:
+		cout << "ì „ì²´ ì„±ì  ì¡°íšŒí•©ë‹ˆë‹¤." << endl;
+		showAllStudent();
+		break;
+	case 4:
+		cout << "ì„±ì ì„ ìž…ë ¥í•©ë‹ˆë‹¤. " << endl;
+		break;
+	case 5:
+		cout << "ì„±ì ì„ ìˆ˜ì •í•©ë‹ˆë‹¤. " << endl;
+	case 6:
+		cout << "ì„±ì ì„ ì‚­ì œí•©ë‹ˆë‹¤. " << endl;
+		break;
+	case 7:
+		cout << "í”„ë¡œê·¸ëž¨ ì¢…ë£Œí•©ë‹ˆë‹¤." << endl;
+		break;
+	default:
+		cout << "ìž˜ëª» ì„ íƒ í•˜ì…¨ìŠµë‹ˆë‹¤. í”„ë¡œê·¸ëž¨ ì¢…ë£Œí•©ë‹ˆë‹¤." << endl;
+	}
+}
 StudentManager::StudentManager() {
 	studentArtList = {};
 	studentSciList = {};
 }
-
 void StudentManager::addStudent() {
-
 	int input;
-	string subject[2] = { "¹®°ú", "ÀÌ°ú" };
-
+	string subject[2] = { "ë¬¸ê³¼", "ì´ê³¼" };
 	while (true) {
-		cout << "ÇÐ»ýÀ» µî·ÏÇÕ´Ï´Ù -> 1.ÇÐ»ý µî·Ï  2.Á¾·á" << endl;
+		cout << "í•™ìƒì„ ë“±ë¡í•©ë‹ˆë‹¤ -> 1.í•™ìƒ ë“±ë¡  2.ì¢…ë£Œ  3.ì´ˆê¸°ë©”ë‰´  : ";
 		cin >> input;
-		if (input == 2)
+		if (input == 2) {
+			cout << "ì¢…ë£Œí•©ë‹ˆë‹¤." << endl;
 			break;
-		else if (input != 1) {
-			cout << "Àß¸ø ÀÔ·ÂÇÏ¼Ì½À´Ï´Ù." << endl;
+		}
+		else if (input > 3) {
+			cout << "ìž˜ëª» ìž…ë ¥í•˜ì…¨ìŠµë‹ˆë‹¤." << endl;
 			continue;
 		}
-
+		else if (input == 3) {
+			showMenu();
+			break;
+		}
 		string name;
-		cout << "¹®/ÀÌ°ú¸¦ ¼±ÅÃÇÏ¼¼¿ä. -> 1.¹®°ú  2.ÀÌ°ú" << endl;
-		cin >> input;
-		cout << "ÀÌ¸§À» ÀÔ·ÂÇÏ¼¼¿ä : ";
-		cin >> name;
 
+		cout << "ë¬¸/ì´ê³¼ë¥¼ ì„ íƒí•˜ì„¸ìš”. -> 1.ë¬¸ê³¼  2.ì´ê³¼   : ";
+		cin >> input;
+		cout << "ì´ë¦„ì„ ìž…ë ¥í•˜ì„¸ìš” : ";
+		cin >> name;
 		if (input == 1) {
 			studentArtList.push_back(make_shared<StudentArt>(name, subject[input - 1], studentArtList.size() + studentSciList.size() + 1));
 		}
 		else if (input == 2) {
 			studentSciList.push_back(make_shared<StudentSci>(name, subject[input - 1], studentArtList.size() + studentSciList.size() + 1));
 		}
-		else
-			cout << "Àß¸ø ÀÔ·ÂÇÏ¼Ì½À´Ï´Ù." << endl;
+		else {
+			cout << "ìž˜ëª» ìž…ë ¥í•˜ì…¨ìŠµë‹ˆë‹¤." << endl;
+			showMenu();
+		}
 	}
 }
+
 
 void StudentManager::editStudent(int id) {
 
 
 	for (auto it : studentArtList) {
 		if (it->getId() == id) {
-			cout << it->getName() << " ÇÐ»ýÀ» ¼±ÅÃÇÏ¼Ì½À´Ï´Ù." << endl;
+			cout << it->getName() << " í•™ìƒì˜ ì„±ì ìž…ë‹ˆë‹¤." << endl;
 			int economics, arts;
-			cout << "°æÁ¦ ¼ºÀûÀ» ÀÔ·ÂÇÏ¼¼¿ä (ÇöÀç Á¡¼ö : " << it->getEconomics() << ") -> " << endl;
+			cout << "ê²½ì œ ì„±ì ì„ ìž…ë ¥í•˜ì„¸ìš” (í˜„ìž¬ ì„±ì  : " << it->getEconomics() << ") -> " << endl;
 			cin >> economics;
-			cout << "¹Ì¼ú ¼ºÀûÀ» ÀÔ·ÂÇÏ¼¼¿ä (ÇöÀç Á¡¼ö : " << it->getArts() << ") -> " << endl;
+			cout << "ë¯¸ìˆ  ì„±ì ì„ ìž…ë ¥í•˜ì„¸ìš” (í˜„ìž¬ ì„±ì  : " << it->getArts() << ") -> " << endl;
 			cin >> arts;
 			it->setScore(economics, arts);
 			break;
@@ -57,11 +97,11 @@ void StudentManager::editStudent(int id) {
 
 	for (auto it : studentSciList) {
 		if (it->getId() == id) {
-			cout << it->getName() << " ÇÐ»ýÀ» ¼±ÅÃÇÏ¼Ì½À´Ï´Ù." << endl;
+			cout << it->getName() << " í•™ìƒì˜ ì„±ì ìž…ë‹ˆë‹¤." << endl;
 			int science, math;
-			cout << "°úÇÐ ¼ºÀûÀ» ÀÔ·ÂÇÏ¼¼¿ä (ÇöÀç Á¡¼ö : " << it->getScience() << ") -> " << endl;
+			cout << "ê³¼í•™ ì„±ì ì„ ìž…ë ¥í•˜ì„¸ìš” (í˜„ìž¬ ì„±ì  : " << it->getScience() << ") -> " << endl;
 			cin >> science;
-			cout << "¼öÇÐ ¼ºÀûÀ» ÀÔ·ÂÇÏ¼¼¿ä (ÇöÀç Á¡¼ö : " << it->getMath() << ") -> " << endl;
+			cout << "ìˆ˜í•™ ì„±ì ì„ ìž…ë ¥í•˜ì„¸ìš” (í˜„ìž¬ ì„±ì  : " << it->getMath() << ") -> " << endl;
 			cin >> math;
 			it->setScore(science, math);
 			break;
@@ -76,16 +116,17 @@ void StudentManager::showStudent(int id) {
 
 	for (auto it : studentSciList) {
 		if (it->getId() == id) {
-				cout << "°úÇÐ : " << it->getScience() << endl;
-				cout << "¼öÇÐ : " << it->getMath() << endl;
+				cout << "ê³¼í•™ ì„±ì  : " << it->getScience() << endl;
+				cout << "ìˆ˜í•™ ì„±ì  : " << it->getMath() << endl;
 		}
 	}
 
 	for (auto it : studentArtList) {
 		if (it->getId() == id) {
-			cout << "°æÁ¦ : " << it->getEconomics() << endl;
-			cout << "¹Ì¼ú : " << it->getArts() << endl;
+			cout << "ê²½ì œ ì„±ì  : " << it->getEconomics() << endl;
+			cout << "ë¯¸ìˆ  ì„±ì  : " << it->getArts() << endl;
 		}
+
 	}
 }
 
@@ -95,33 +136,33 @@ void StudentManager::showAllStudent() {
 	int k = studentSciList.size();
 
 	if (j + k == 0) {
-		cout << "µî·ÏµÈ ÇÐ»ýÀÌ ¾ø½À´Ï´Ù." << endl;
+		cout << "ë“±ë¡ëœ í•™ìƒì´ ì—†ìŠµë‹ˆë‹¤." << endl;
 		return;
 	}
 
 	for (int i = 1; i <= j + k; i++) {
 		if (artIdx < j && sciIdx < k && studentArtList[artIdx]->getId() > studentSciList[sciIdx]->getId()) {
-			cout << studentArtList[artIdx]->getName() << " ÇÐ»ý, ÇÐ¹ø: " << studentArtList[artIdx]->getId() << ", ";
-			cout << "¹®°ú" << endl;
-			cout << "°æÁ¦ : " << studentArtList[artIdx]->getEconomics() << endl;
-			cout << "¹Ì¼ú : " << studentArtList[artIdx]->getArts() << endl;
-			cout << "ÆòÁ¡ : " << studentArtList[artIdx]->getavgScore() << endl;
+			cout << studentArtList[artIdx]->getName() << " í•™ìƒ, í•™ë²ˆ: " << studentArtList[artIdx]->getId() << ", ";
+			cout << "ë¬¸ê³¼ìž…ë‹ˆë‹¤." << endl;
+			cout << "ê²½ì œ : " << studentArtList[artIdx]->getEconomics() << endl;
+			cout << "ë¯¸ìˆ  : " << studentArtList[artIdx]->getArts() << endl;
+			cout << "í‰ê·  : " << studentArtList[artIdx]->getavgScore() << endl;
 			artIdx++;
 		}
 		else if (sciIdx < k) {
-			cout << studentSciList[artIdx]->getName() << " ÇÐ»ý, ÇÐ¹ø: " << studentSciList[artIdx]->getId() << ", ";
-			cout << "ÀÌ°ú" << endl;
-			cout << "°úÇÐ : " << studentSciList[sciIdx]->getScience() << endl;
-			cout << "¼öÇÐ : " << studentSciList[sciIdx]->getMath() << endl;
-			cout << "ÆòÁ¡ : " << studentSciList[artIdx]->getavgScore() << endl;
+			cout << studentSciList[artIdx]->getName() << " í•™ìƒ, í•™ë²ˆ: " << studentSciList[artIdx]->getId() << ", ";
+			cout << "ì´ê³¼ìž…ë‹ˆë‹¤." << endl;
+			cout << "ê³¼í•™ : " << studentSciList[sciIdx]->getScience() << endl;
+			cout << "ìˆ˜í•™ : " << studentSciList[sciIdx]->getMath() << endl;
+			cout << "í‰ê·  : " << studentSciList[artIdx]->getavgScore() << endl;
 			sciIdx++;
 		}
 		else {
-			cout << studentArtList[artIdx]->getName() << " ÇÐ»ý, ÇÐ¹ø: " << studentArtList[artIdx]->getId() << ", ";
-			cout << "¹®°ú" << endl;
-			cout << "°æÁ¦ : " << studentArtList[artIdx]->getEconomics() << endl;
-			cout << "¹Ì¼ú : " << studentArtList[artIdx]->getArts() << endl;
-			cout << "ÆòÁ¡ : " << studentArtList[artIdx]->getavgScore() << endl;
+			cout << studentArtList[artIdx]->getName() << " í•™ìƒ, í•™ë²ˆ: " << studentArtList[artIdx]->getId() << ", ";
+			cout << "ë¬¸ê³¼ìž…ë‹ˆë‹¤." << endl;
+			cout << "ê³¼í•™ : " << studentArtList[artIdx]->getEconomics() << endl;
+			cout << "ìˆ˜í•™ : " << studentArtList[artIdx]->getArts() << endl;
+			cout << "í‰ê·  : " << studentArtList[artIdx]->getavgScore() << endl;
 			artIdx++;
 		}
 	}
