@@ -32,6 +32,26 @@ void Student::setavgScore(double avgScore) {
 void Student::setScore(int, int) {
 
 }
+StudentSci::StudentSci() {
+	this->science = 0;
+	this->math = 0;
+	setavgScore(0);
+}
+StudentSci::StudentSci(string name, string subject, int id) {
+	setName(name);
+	setSubject(subject);
+	setId(id);
+}
+StudentArt::StudentArt() {
+	this->economics = 0;
+	this->arts = 0;
+	setavgScore(0);
+}
+StudentArt::StudentArt(string name, string subject, int id) {
+	setName(name);
+	setSubject(subject);
+	setId(id);
+}
 void StudentSci::setScore(int science, int math) {
 	this->science = science;
 	this->math = math;
@@ -42,15 +62,15 @@ void StudentArt::setScore(int economics, int arts) {
 	this->arts = arts;
 	setavgScore((double)(economics + arts) / 2);
 }
-int StudentSci::getScience() {
+int StudentSci::getScience() const {
 	return science;
 }
-int StudentSci::getMath() {
+int StudentSci::getMath() const  {
 	return math;
 }
-int StudentArt::getEconomics() {
+int StudentArt::getEconomics() const {
 	return economics;
 }
-int StudentArt::getArts() {
+int StudentArt::getArts() const {
 	return arts;
 }
