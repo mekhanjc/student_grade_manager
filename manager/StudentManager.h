@@ -11,4 +11,5 @@ public:
 	void addStudent();
 	void showStudent(int id);
 	void showAllStudent();
+	void showMenu();
 };
