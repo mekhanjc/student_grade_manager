@@ -1,11 +1,10 @@
 #include <iostream>
 #include "StudentManager.h"
 
-
 int main()
 {
 	
-	cout << "ÇĞ»ı Á¤º¸ °ü¸®½Ã½ºÅÛ ver1.0 " << endl;
+	cout << "ï¿½Ğ»ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ã½ï¿½ï¿½ï¿½ ver1.0 " << endl;
 	cout << "----------------------------" << endl;
 	StudentManager st;
 	st.showMenu();

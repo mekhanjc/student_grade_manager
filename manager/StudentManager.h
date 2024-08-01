@@ -6,9 +6,12 @@ using namespace std;
 #include "student.h"
 
 class StudentManager {
-	vector<shared_ptr<Student>> studentList;
+	vector<shared_ptr<StudentArt>> studentArtList;
+	vector<shared_ptr<StudentSci>> studentSciList;
 public:
+	StudentManager();
 	void addStudent();
+	void editStudent(int id);
 	void showStudent(int id);
 	void showAllStudent();
 	void showMenu();
