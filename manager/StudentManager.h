@@ -15,4 +15,5 @@ public:
 	void showStudent(int id);
 	void showAllStudent();
 	void showMenu();
+	void printStudent(int id);
 };

@@ -33,24 +33,26 @@ void Student::setScore(int, int) {
 
 }
 StudentSci::StudentSci() {
-	this->science = 0;
-	this->math = 0;
-	setavgScore(0);
+	this->science = -1;
+	this->math = -1;
 }
 StudentSci::StudentSci(string name, string subject, int id) {
 	setName(name);
 	setSubject(subject);
 	setId(id);
+	this->science = -1;
+	this->math = -1;
 }
 StudentArt::StudentArt() {
-	this->economics = 0;
-	this->arts = 0;
-	setavgScore(0);
+	this->economics = -1;
+	this->arts = -1;
 }
 StudentArt::StudentArt(string name, string subject, int id) {
 	setName(name);
 	setSubject(subject);
 	setId(id);
+	this->economics = -1;
+	this->arts = -1;
 }
 void StudentSci::setScore(int science, int math) {
 	this->science = science;

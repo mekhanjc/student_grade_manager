@@ -1,20 +1,20 @@
 ﻿#include <iostream>
+#include <fstream>
 #include "StudentManager.h"
 
 
 void StudentManager::showMenu() {
-	int num;
+	int num, id;
 	cout << "------------------------------" << endl;
 	cout << "밑의 실행 목록중 선택해주세요." << endl;
 	cout << "------------------------------" << endl;
-	cout << "1.학생등록 2.성적조회 3.전체성적조회 4.성적입력 5.성적수정 6.성적삭제 7.종료" << endl;
+	cout << "1.학생등록 2.성적조회 3.전체성적조회 4.성적입력 5.성적표출력 6.종료" << endl;
 	cin >> num;
 	switch (num) {
 	case 1:
 		addStudent();
 		break;
 	case 2:
-		int id;
 		cout << "학번 ID 입력 : ";
 		cin >> id;
 		showStudent(id);
@@ -25,17 +25,23 @@ void StudentManager::showMenu() {
 		break;
 	case 4:
 		cout << "성적을 입력합니다. " << endl;
+		cout << "학번 ID 입력 : ";
+		cin >> id;
+		editStudent(id);
 		break;
 	case 5:
-		cout << "성적을 수정합니다. " << endl;
-	case 6:
-		cout << "성적을 삭제합니다. " << endl;
+		cout << "성적표를 출력합니다." << endl;
+		cout << "학번 ID 입력 : ";
+		cin >> id;
+		printStudent(id);
 		break;
-	case 7:
+	case 6:
 		cout << "프로그램 종료합니다." << endl;
+		exit;
 		break;
 	default:
 		cout << "잘못 선택 하셨습니다. 프로그램 종료합니다." << endl;
+		exit;
 	}
 }
 StudentManager::StudentManager() {
@@ -117,22 +123,31 @@ void StudentManager::showStudent(int id) {
 
 	for (auto it : studentSciList) {
 		if (it->getId() == id) {
-				cout << "과학 성적 : " << it->getScience() << endl;
-				cout << "수학 성적 : " << it->getMath() << endl;
+			if (it->getScience() < 0 || it->getMath() < 0) {
+				cout << "입력된 성적이 없습니다." << endl;
+				return;
+			}
+			cout << "과학 성적 : " << it->getScience() << endl;
+			cout << "수학 성적 : " << it->getMath() << endl;
+			cout << "평균 성적 : " << it->getavgScore() << endl;
 		}
 	}
 
 	for (auto it : studentArtList) {
 		if (it->getId() == id) {
+			if (it->getEconomics() < 0 || it->getArts() < 0) {
+				cout << "입력된 성적이 없습니다." << endl;
+				return;
+			}
 			cout << "경제 성적 : " << it->getEconomics() << endl;
 			cout << "미술 성적 : " << it->getArts() << endl;
+			cout << "평균 성적 : " << it->getavgScore() << endl;
 		}
 
 	}
 }
 
 void StudentManager::showAllStudent() {
-	int sciIdx = 0, artIdx = 0;
 	int j = studentArtList.size();
 	int k = studentSciList.size();
 
@@ -141,30 +156,61 @@ void StudentManager::showAllStudent() {
 		return;
 	}
 
-	for (int i = 1; i <= j + k; i++) {
-		if (artIdx < j && sciIdx < k && studentArtList[artIdx]->getId() > studentSciList[sciIdx]->getId()) {
-			cout << studentArtList[artIdx]->getName() << " 학생, 학번: " << studentArtList[artIdx]->getId() << ", ";
-			cout << "문과입니다." << endl;
-			cout << "경제 : " << studentArtList[artIdx]->getEconomics() << endl;
-			cout << "미술 : " << studentArtList[artIdx]->getArts() << endl;
-			cout << "평균 : " << studentArtList[artIdx]->getavgScore() << endl;
-			artIdx++;
+	for (int artIdx = 0; artIdx < j; artIdx++) {
+		cout << studentArtList[artIdx]->getName() << " 학생, 학번: " << studentArtList[artIdx]->getId() << ", ";
+		cout << "문과입니다." << endl;
+		if (studentArtList[artIdx]->getEconomics() < 0 || studentArtList[artIdx]->getArts() < 0) {
+			cout << "입력된 성적이 없습니다." << endl;
+			continue;
 		}
-		else if (sciIdx < k) {
-			cout << studentSciList[artIdx]->getName() << " 학생, 학번: " << studentSciList[artIdx]->getId() << ", ";
-			cout << "이과입니다." << endl;
-			cout << "과학 : " << studentSciList[sciIdx]->getScience() << endl;
-			cout << "수학 : " << studentSciList[sciIdx]->getMath() << endl;
-			cout << "평균 : " << studentSciList[artIdx]->getavgScore() << endl;
-			sciIdx++;
+		cout << "경제 : " << studentArtList[artIdx]->getEconomics() << endl;
+		cout << "미술 : " << studentArtList[artIdx]->getArts() << endl;
+		cout << "평균 : " << studentArtList[artIdx]->getavgScore() << endl;
+	}
+
+	for (int sciIdx = 0; sciIdx < k; sciIdx++) {
+		cout << studentSciList[sciIdx]->getName() << " 학생, 학번: " << studentSciList[sciIdx]->getId() << ", ";
+		cout << "이과입니다." << endl;
+		if (studentSciList[sciIdx]->getScience() < 0 || studentSciList[sciIdx]->getMath() < 0) {
+			cout << "입력된 성적이 없습니다." << endl;
+			continue;
 		}
-		else {
-			cout << studentArtList[artIdx]->getName() << " 학생, 학번: " << studentArtList[artIdx]->getId() << ", ";
-			cout << "문과입니다." << endl;
-			cout << "과학 : " << studentArtList[artIdx]->getEconomics() << endl;
-			cout << "수학 : " << studentArtList[artIdx]->getArts() << endl;
-			cout << "평균 : " << studentArtList[artIdx]->getavgScore() << endl;
-			artIdx++;
+		cout << "과학 : " << studentSciList[sciIdx]->getScience() << endl;
+		cout << "수학 : " << studentSciList[sciIdx]->getMath() << endl;
+		cout << "평균 : " << studentSciList[sciIdx]->getavgScore() << endl;
+	}
+}
+
+void StudentManager::printStudent(int id) {
+	ofstream fout("c:\\temp\\student.txt");
+
+	if (!fout) {
+		cout << "파일을 열 수 없습니다." << endl;
+		return;
+	}
+
+	for (auto it : studentSciList) {
+		if (it->getId() == id) {
+			if (it->getScience() < 0 || it->getMath() < 0) {
+				cout << "입력된 성적이 없습니다." << endl;
+				return;
+			}
+			fout << "과학 성적 : " << it->getScience() << endl;
+			fout << "수학 성적 : " << it->getMath() << endl;
+			fout << "평균 성적 : " << it->getavgScore() << endl;
 		}
 	}
+	
+	for (auto it : studentArtList) {
+		if (it->getId() == id) {
+			if (it->getEconomics() < 0 || it->getArts() < 0) {
+				cout << "입력된 성적이 없습니다." << endl;
+				return;
+			}
+			fout << "경제 성적 : " << it->getEconomics() << endl;
+			fout << "미술 성적 : " << it->getArts() << endl;
+			fout << "평균 성적 : " << it->getavgScore() << endl;
+		}
+	}
+	cout << "출력이 완료되었습니다." << endl;
 }
