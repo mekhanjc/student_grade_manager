@@ -20,6 +20,9 @@ void Student::setSubject(string subject) {
 void Student::setId(int id) {
 	this->id = id;
 }
+int Student::getId() {
+	return id;
+}
 double Student::getavgScore() {
 	return avgScore;
 }
