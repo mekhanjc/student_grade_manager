@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include "StudentManager.h"
 
 int main()
@@ -8,6 +8,4 @@ int main()
 	cout << "----------------------------" << endl;
 	StudentManager st;
 	st.showMenu();
-
-
 }
