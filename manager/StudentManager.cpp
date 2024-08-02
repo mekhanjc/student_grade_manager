@@ -54,7 +54,6 @@ void StudentManager::showMenu() {
 			break;
 		default:
 			cout << "잘못 선택 하셨습니다." << endl;
-			return;
 		}
 
 	}
@@ -214,7 +213,9 @@ void StudentManager::showAllStudent() {
 
 
 void StudentManager::printStudent(int id) {
-	ofstream fout("c:\\temp\\student.txt");
+	string pwd = "c:\\temp\\student" + to_string(id) + ".txt";
+	ofstream fout;
+	fout.open(pwd);
 
 	if (!fout) {
 		cout << "파일을 열 수 없습니다." << endl;
@@ -227,9 +228,13 @@ void StudentManager::printStudent(int id) {
 				cout << "입력된 성적이 없습니다." << endl;
 				return;
 			}
+			fout << "이름: " << it->getName() << ", 학번: " << it->getId() << ", " << it->getSubject() << endl;
+			fout << "--------------------------------------------------------" << endl;
 			fout << "과학 성적 : " << it->getScience() << endl;
 			fout << "수학 성적 : " << it->getMath() << endl;
 			fout << "평균 성적 : " << it->getavgScore() << endl;
+			fout << "--------------------------------------------------------" << endl;
+			cout << it->getName() << " 학생의 성적표가 출력이 완료되었습니다." << endl;
 		}
 	}
 	
@@ -239,10 +244,13 @@ void StudentManager::printStudent(int id) {
 				cout << "입력된 성적이 없습니다." << endl;
 				return;
 			}
+			fout << "이름: " << it->getName() << ", 학번: " << it->getId() << ", " << it->getSubject() << endl;
+			fout << "--------------------------------------------------------" << endl;
 			fout << "경제 성적 : " << it->getEconomics() << endl;
 			fout << "미술 성적 : " << it->getArts() << endl;
 			fout << "평균 성적 : " << it->getavgScore() << endl;
+			fout << "--------------------------------------------------------" << endl;
+			cout << it->getName() << " 학생의 성적표가 출력이 완료되었습니다." << endl;
 		}
 	}
-	cout << "출력이 완료되었습니다." << endl;
 }
