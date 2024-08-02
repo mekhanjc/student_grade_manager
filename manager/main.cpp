@@ -7,6 +7,5 @@ int main()
 	cout << "학생 성적 관리 시스템 ver1.0 " << endl;
 	cout << "----------------------------" << endl;
 	StudentManager st;
-	while(true)
-		st.showMenu();
+	st.showMenu();
 }
