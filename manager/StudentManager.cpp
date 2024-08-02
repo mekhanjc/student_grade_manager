@@ -152,6 +152,7 @@ void StudentManager::showStudent(int id) {
 
 	for (auto it : studentSciList) {
 		if (it->getId() == id) {
+			cout << it->getName() << " 학생의 성적입니다." << endl;
 			if (it->getScience() < 0 || it->getMath() < 0) {
 				cout << "입력된 성적이 없습니다." << endl;
 				return;
@@ -164,6 +165,7 @@ void StudentManager::showStudent(int id) {
 
 	for (auto it : studentArtList) {
 		if (it->getId() == id) {
+			cout << it->getName() << " 학생의 성적입니다." << endl;
 			if (it->getEconomics() < 0 || it->getArts() < 0) {
 				cout << "입력된 성적이 없습니다." << endl;
 				return;
