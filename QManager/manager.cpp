@@ -9,13 +9,15 @@
 #include <QTextEdit>
 
 
+
+
 Manager::Manager(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::Manager)
 {
     ui->setupUi(this);
-    QString filePathStudent = "C:/Users/change05/Desktop/student.csv";
-    QString filePathGrade = "C:/Users/change05/Desktop/grade.csv";
+    QString filePathStudent = "C:/Users/change10/Desktop/student.csv";
+    QString filePathGrade = "C:/Users/change10/Desktop/grade.csv";
     readStudentFile(filePathStudent);
     readGradeFile(filePathGrade);
 
