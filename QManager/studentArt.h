@@ -12,7 +12,6 @@ public:
     StudentArt(QString name, QString subject, int id, QString gender,\
                QString birthday, QString phonenumber, QString address);
     void setScore(QString subject, int score);
-
 };
 
 #endif // STUDENTART_H

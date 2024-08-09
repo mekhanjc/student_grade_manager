@@ -26,7 +26,10 @@ private:
     Ui::Manager *ui;
 
 public slots:
-    void readStudentFile(const QString &filePath);
+    void openStudentFile();
+    void saveStudentFile();
+    void registStudent();
+    void deleteStudent();
     void readGradeFile(const QString &filePath);
 };
 #endif // MAINWINDOW_H

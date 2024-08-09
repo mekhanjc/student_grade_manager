@@ -4,7 +4,8 @@ StudentSci::StudentSci() {
 
 }
 
-StudentSci::StudentSci(QString name, QString subject, int id) {
+StudentSci::StudentSci(QString name, QString subject, int id, QString gender,
+                       QString birthday, QString phonenumber, QString address) {
     setName(name);
     setSubject(subject);
     setId(id);
@@ -14,12 +15,4 @@ StudentSci::StudentSci(QString name, QString subject, int id) {
 void StudentSci::setScore(QString subject,int score) {
 
     this->SciSubjectList[subject] = score;
-}
-
-int StudentSci::getScience() const {
-
-}
-
-int StudentSci::getMath() const  {
-
 }

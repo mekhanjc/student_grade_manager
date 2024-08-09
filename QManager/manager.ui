@@ -51,7 +51,7 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QLineEdit" name="LineEditName">
+        <widget class="QLineEdit" name="nameLineEdit">
          <property name="toolTip">
           <string>이름을 저장합니다.</string>
          </property>
@@ -96,7 +96,7 @@
         </widget>
        </item>
        <item row="2" column="1">
-        <widget class="QComboBox" name="ComboBoxMajor">
+        <widget class="QComboBox" name="majorComboBox">
          <property name="toolTip">
           <string>문과, 이과를 구분해서 저장합니다</string>
          </property>
@@ -132,7 +132,7 @@
         </widget>
        </item>
        <item row="3" column="1">
-        <widget class="QLineEdit" name="LineEditBirth">
+        <widget class="QLineEdit" name="birthLineEdit">
          <property name="toolTip">
           <string>생년월일을 저장합니다.</string>
          </property>
@@ -152,7 +152,7 @@
         </widget>
        </item>
        <item row="4" column="1">
-        <widget class="QLineEdit" name="LineEditPhone">
+        <widget class="QLineEdit" name="phoneLineEdit">
          <property name="toolTip">
           <string>전화번호를 저장합니다.</string>
          </property>
@@ -172,7 +172,7 @@
         </widget>
        </item>
        <item row="5" column="1">
-        <widget class="QLineEdit" name="LineEditAddress">
+        <widget class="QLineEdit" name="addressLineEdit">
          <property name="toolTip">
           <string>주소를 저장합니다.</string>
          </property>
@@ -186,7 +186,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QTableWidget" name="tableWidgetStudent">
+     <widget class="QTableWidget" name="studentTableWidget">
       <property name="geometry">
        <rect>
         <x>240</x>
@@ -261,7 +261,7 @@
       </property>
       <layout class="QGridLayout" name="gridLayout">
        <item row="0" column="1">
-        <widget class="QPushButton" name="deleteButton">
+        <widget class="QPushButton" name="deleteStudentButton">
          <property name="toolTip">
           <string>학생정보를 삭제합니다.</string>
          </property>
@@ -271,7 +271,7 @@
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="QPushButton" name="pushButton_6">
+        <widget class="QPushButton" name="openStudentButton">
          <property name="toolTip">
           <string>저장된 학생리스트를 불러옵니다.</string>
          </property>
@@ -281,7 +281,7 @@
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QPushButton" name="pushButton_7">
+        <widget class="QPushButton" name="saveStudentButton">
          <property name="toolTip">
           <string>학생리스트를 저장합니다.</string>
          </property>
@@ -291,7 +291,7 @@
         </widget>
        </item>
        <item row="0" column="0">
-        <widget class="QPushButton" name="registButton">
+        <widget class="QPushButton" name="registStudentButton">
          <property name="toolTip">
           <string>학생정보를 등록합니다.</string>
          </property>

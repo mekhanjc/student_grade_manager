@@ -7,6 +7,7 @@
 
 #include <QPushButton>
 #include <QTextEdit>
+#include <QFileDialog>
 
 
 
@@ -16,9 +17,8 @@ Manager::Manager(QWidget *parent)
     , ui(new Ui::Manager)
 {
     ui->setupUi(this);
-    QString filePathStudent = "C:/Users/change10/Desktop/student.csv";
     QString filePathGrade = "C:/Users/change10/Desktop/grade.csv";
-    readStudentFile(filePathStudent);
+
     readGradeFile(filePathGrade);
 
     PrintManager *p = new PrintManager;
@@ -26,8 +26,10 @@ Manager::Manager(QWidget *parent)
             p->printTable(ui->tableWidgetGrade);
     });
 
-
-
+    connect(ui->openStudentButton, SIGNAL(clicked()), SLOT(openStudentFile()));
+    connect(ui->saveStudentButton, SIGNAL(clicked()), SLOT(saveStudentFile()));
+    connect(ui->registStudentButton, SIGNAL(clicked()), SLOT(registStudent()));
+    connect(ui->deleteStudentButton, SIGNAL(clicked()), SLOT(deleteStudent()));
 
 }
 
@@ -36,33 +38,98 @@ Manager::~Manager()
     delete ui;
 }
 
-void Manager::readStudentFile(const QString &filePath) {
-    QFile file(filePath);
+
+void Manager::openStudentFile() {
+    QString fileName = QFileDialog::getOpenFileName(this, "Open File", "", "CSV Files (*.csv);;All Files (*)");
+    if (fileName.isEmpty()) {
+        return;
+    }
+
+    QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << "Failed to open file:" << file.errorString();
         return;
     }
 
     QTextStream in(&file);
+    in.setEncoding(QStringConverter::LastEncoding);
 
     bool firstLine = true;
     int rowCount = 0;
-    in.setEncoding(QStringConverter::LastEncoding);
-    ui->tableWidgetStudent->setEditTriggers(QTableWidget::NoEditTriggers);
+    ui->studentTableWidget->setRowCount(rowCount);
+    ui->studentTableWidget->setEditTriggers(QTableWidget::NoEditTriggers);
 
     while (!in.atEnd()) {
         QString line = in.readLine();
         QStringList fields = line.split(",");
 
-        ui->tableWidgetStudent->insertRow(rowCount);
+        ui->studentTableWidget->insertRow(rowCount);
         for (int i = 0; i < fields.size(); ++i) {
-            ui->tableWidgetStudent->setItem(rowCount, i, new QTableWidgetItem(fields[i]));
+            ui->studentTableWidget->setItem(rowCount, i, new QTableWidgetItem(fields[i]));
         }
         ++rowCount;
     }
 
-    ui->tableWidgetStudent->setSortingEnabled(true);
+    ui->studentTableWidget->setSortingEnabled(true);
 }
+
+void Manager::saveStudentFile() {
+    QString fileName = QFileDialog::getSaveFileName(this, "Save File", "", "CSV Files (*.csv);;All Files (*)");
+    if (fileName.isEmpty()) {
+        return;
+    }
+
+    QFile file(fileName);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        return;
+    }
+
+    QTextStream out(&file);
+    out.setEncoding(QStringConverter::LastEncoding);
+
+    // Write table data
+    for (int row = 0; row < ui->studentTableWidget->rowCount(); ++row) {
+        QStringList rowItems;
+        for (int col = 0; col < ui->studentTableWidget->columnCount(); ++col) {
+            QTableWidgetItem* item = ui->studentTableWidget->item(row, col);
+            if (item) {
+                rowItems << item->text();
+            } else {
+                rowItems << "";
+            }
+        }
+        out << rowItems.join(',') << '\n';
+    }
+
+    file.close();
+}
+
+void Manager::registStudent() {
+
+    Student student;
+    int rowNum = ui->studentTableWidget->rowCount();
+    student.setId(rowNum);
+    student.setName(ui->nameLineEdit->text());
+
+    if (ui->majorComboBox->currentIndex()){
+        student.setSubject("이과");
+    } else {
+        student.setSubject("문과");
+    }
+    QList<QString> list = {QString::number(student.getId()), student.getName()};
+
+    ui->studentTableWidget->insertRow(rowNum);
+    for (int i = 0; i < list.size(); ++i) {
+        ui->studentTableWidget->setItem(rowNum, i, new QTableWidgetItem(list[i]));
+        qDebug() << ui->studentTableWidget;
+    }
+}
+
+void Manager::deleteStudent() {
+    ui->studentTableWidget->removeRow(ui->studentTableWidget->currentRow());
+    ui->studentTableWidget->setCurrentCell(-1, -1);
+}
+
 
 
 void Manager::readGradeFile(const QString &filePath) {
