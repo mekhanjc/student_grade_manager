@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -51,7 +51,11 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QLineEdit" name="LineEditName"/>
+        <widget class="QLineEdit" name="nameLineEdit">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
        </item>
        <item row="1" column="0">
         <widget class="QLabel" name="Label_2">
@@ -63,14 +67,14 @@
        <item row="1" column="1">
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
-          <widget class="QRadioButton" name="radioButtonMale">
+          <widget class="QRadioButton" name="maleRadioButton">
            <property name="text">
             <string>남성</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QRadioButton" name="radioButtonFemale">
+          <widget class="QRadioButton" name="femaleRadioButton">
            <property name="text">
             <string>여성</string>
            </property>
@@ -86,7 +90,7 @@
         </widget>
        </item>
        <item row="3" column="1">
-        <widget class="QLineEdit" name="LineEditBirth"/>
+        <widget class="QLineEdit" name="birthLineEdit"/>
        </item>
        <item row="4" column="0">
         <widget class="QLabel" name="Label_4">
@@ -96,7 +100,7 @@
         </widget>
        </item>
        <item row="4" column="1">
-        <widget class="QLineEdit" name="LineEditPhone"/>
+        <widget class="QLineEdit" name="phoneLineEdit"/>
        </item>
        <item row="5" column="0">
         <widget class="QLabel" name="Label_5">
@@ -106,7 +110,7 @@
         </widget>
        </item>
        <item row="5" column="1">
-        <widget class="QLineEdit" name="LineEditAddress"/>
+        <widget class="QLineEdit" name="addressLineEdit"/>
        </item>
        <item row="2" column="0">
         <widget class="QLabel" name="Label_6">
@@ -116,7 +120,24 @@
         </widget>
        </item>
        <item row="2" column="1">
-        <widget class="QComboBox" name="ComboBoxMajor"/>
+        <widget class="QComboBox" name="majorComboBox">
+         <property name="currentText">
+          <string/>
+         </property>
+         <property name="placeholderText">
+          <string>학과를 선택하세요.</string>
+         </property>
+         <item>
+          <property name="text">
+           <string>문과</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>이과</string>
+          </property>
+         </item>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -195,28 +216,28 @@
       </property>
       <layout class="QGridLayout" name="gridLayout">
        <item row="0" column="1">
-        <widget class="QPushButton" name="deleteButton">
+        <widget class="QPushButton" name="studentEditButton">
          <property name="text">
           <string>수정</string>
          </property>
         </widget>
        </item>
        <item row="0" column="0">
-        <widget class="QPushButton" name="registButton">
+        <widget class="QPushButton" name="studentRegistButton">
          <property name="text">
           <string>등록</string>
          </property>
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="QPushButton" name="pushButton_6">
+        <widget class="QPushButton" name="studentOpenButton">
          <property name="text">
           <string>불러오기</string>
          </property>
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QPushButton" name="pushButton_7">
+        <widget class="QPushButton" name="studentSaveButton">
          <property name="text">
           <string>저장하기</string>
          </property>
@@ -237,6 +258,9 @@
         <width>651</width>
         <height>441</height>
        </rect>
+      </property>
+      <property name="toolTip">
+       <string/>
       </property>
       <attribute name="horizontalHeaderDefaultSectionSize">
        <number>75</number>
@@ -316,6 +340,15 @@
         <height>24</height>
        </rect>
       </property>
+      <property name="toolTip">
+       <string>asdfsdf</string>
+      </property>
+      <property name="statusTip">
+       <string/>
+      </property>
+      <property name="accessibleDescription">
+       <string/>
+      </property>
       <property name="text">
        <string>불러오기</string>
       </property>
@@ -351,6 +384,32 @@
      <attribute name="title">
       <string>성적표 출력</string>
      </attribute>
+     <widget class="QPushButton" name="printButton">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>120</y>
+        <width>75</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>출력</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_6">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>160</y>
+        <width>75</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>검색</string>
+      </property>
+     </widget>
     </widget>
    </widget>
   </widget>

@@ -1,4 +1,4 @@
-#include "manager.h"
+#include "studentManager.h"
 
 #include "./ui_manager.h"
 #include "printManager.h"
@@ -9,9 +9,9 @@
 #include <QTextEdit>
 
 
-Manager::Manager(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::Manager)
+StudentManager::StudentManager(QWidget *parent)
+    : QManager(parent)
+    , ui(new Ui::StudentManager)
 {
     ui->setupUi(this);
     QString filePathStudent = "C:/Users/change05/Desktop/student.csv";
@@ -19,19 +19,19 @@ Manager::Manager(QWidget *parent)
     readStudentFile(filePathStudent);
     readGradeFile(filePathGrade);
 
-    PrintManager *p = new PrintManager;
+    PrintStudentManager *p = new PrintStudentManager;
     connect(ui->printButton, &QPushButton::clicked, [=](){
-            p->printTable(ui->tableWidgetGrade);
+        p->printTable(ui->tableWidgetGrade);
     });
 
 }
 
-Manager::~Manager()
+StudentManager::~StudentManager()
 {
     delete ui;
 }
 
-void Manager::readStudentFile(const QString &filePath) {
+void StudentManager::readStudentFile(const QString &filePath) {
     QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << "Failed to open file:" << file.errorString();
@@ -60,7 +60,7 @@ void Manager::readStudentFile(const QString &filePath) {
 }
 
 
-void Manager::readGradeFile(const QString &filePath) {
+void StudentManager::readGradeFile(const QString &filePath) {
     QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << "Failed to open file:" << file.errorString();

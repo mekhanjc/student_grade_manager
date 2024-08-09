@@ -1,5 +1,5 @@
-#ifndef MANAGER_H
-#define MANAGER_H
+#ifndef MAINWINDOW_H
+#define MAINWINDOW_H
 
 #include <QMainWindow>
 #include <QFile>
@@ -28,6 +28,5 @@ private:
 public slots:
     void readStudentFile(const QString &filePath);
     void readGradeFile(const QString &filePath);
-    void print(const QString &filePath);
 };
-#endif // MANAGER_H
+#endif // MAINWINDOW_H
