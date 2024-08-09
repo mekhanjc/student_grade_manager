@@ -26,6 +26,9 @@ Manager::Manager(QWidget *parent)
             p->printTable(ui->tableWidgetGrade);
     });
 
+
+
+
 }
 
 Manager::~Manager()

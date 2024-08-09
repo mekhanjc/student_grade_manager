@@ -4,20 +4,31 @@
 #include <iostream>
 #include <vector>
 #include <memory>
+#include <QString>
+#include <QMap>
+
 using namespace std;
 
 class Student {
-    string name;
-    string subject;
+    QString name;
+    QString subject;
+    QString gender;
+    QString birthday;
+    QString phonenumber;
+    QString address;
+
     int id;
     double avgScore = 0;
+
 public:
-    Student() {this->name = ""; this->id = 0; this->subject = ""; }
-    Student(string name, string subject, int id);
-    string getName();
-    void setName(string name);
-    string getSubject();
-    void setSubject(string subject);
+    Student() {this->name = ""; this->id = 0; this->subject = ""; this->gender = "";
+            this->birthday = ""; this->phonenumber = ""; this->address = "";}
+    Student(QString name, QString subject, int id, QString gender,\
+            QString birthday, QString phonenumber, QString address);
+    QString getName();
+    void setName(QString name);
+    QString getSubject();
+    void setSubject(QString subject);
     void setId(int id);
     int getId();
     void setavgScore(double avgScore);
