@@ -29,5 +29,7 @@ public slots:
     void readStudentFile(const QString &filePath);
     void readGradeFile(const QString &filePath);
     void print(const QString &filePath);
+private slots:
+    void on_pushButton_5_clicked();
 };
 #endif // MANAGER_H

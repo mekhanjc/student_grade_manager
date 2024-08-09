@@ -6,13 +6,15 @@
 #include <QtPrintSupport/QPrintDialog>
 #include <QtPrintSupport/QPrinter>
 
+
+
 Manager::Manager(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::Manager)
 {
     ui->setupUi(this);
-    QString filePathStudent = "C:/Users/change05/Desktop/student.csv";
-    QString filePathGrade = "C:/Users/change05/Desktop/grade.csv";
+    QString filePathStudent = "C:/Users/change10/Desktop/student.csv";
+    QString filePathGrade = "C:/Users/change10/Desktop/grade.csv";
     readStudentFile(filePathStudent);
     readGradeFile(filePathGrade);
 
@@ -167,3 +169,9 @@ void Manager::print(const QString &filePath) {
         painter.end();
     }
 }
+
+void Manager::on_pushButton_5_clicked()
+{
+
+}
+
