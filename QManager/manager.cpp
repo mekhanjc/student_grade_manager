@@ -8,6 +8,7 @@
 #include <QPushButton>
 #include <QTextEdit>
 #include <QFileDialog>
+#include <QCheckBox>
 
 
 
@@ -121,8 +122,20 @@ void Manager::registStudent() {
     ui->studentTableWidget->insertRow(rowNum);
     for (int i = 0; i < list.size(); ++i) {
         ui->studentTableWidget->setItem(rowNum, i, new QTableWidgetItem(list[i]));
+        ui->studentTableWidget->item(rowNum, i)->setTextAlignment(Qt::AlignCenter); // 학생관리 테이블위젯 텍스트들 중앙정렬
         qDebug() << ui->studentTableWidget;
     }
+    int lastColumn = ui->studentTableWidget->columnCount() - 1;
+    QCheckBox *checkbox = new QCheckBox();
+    QWidget *widget = new QWidget();
+    QHBoxLayout *layout = new QHBoxLayout(widget);
+
+    layout->addWidget(checkbox);
+    layout->setAlignment(Qt::AlignCenter); // Center the checkbox in the layout
+    layout->setContentsMargins(0, 0, 0, 0); // Remove margins to fully center the checkbox
+    widget->setLayout(layout);
+
+    ui->studentTableWidget->setCellWidget(rowNum, lastColumn, widget);
 }
 
 void Manager::deleteStudent() {
