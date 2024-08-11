@@ -9,6 +9,7 @@
 #include <QTextEdit>
 #include <QFileDialog>
 #include <QCheckBox>
+#include <QTableWidget>
 
 
 
@@ -111,6 +112,9 @@ void Manager::registStudent() {
     int rowNum = ui->studentTableWidget->rowCount();
     student.setId(rowNum);
     student.setName(ui->nameLineEdit->text());
+    student.setBirthday(ui->birthLineEdit->text());
+    student.setPhone(ui->phoneLineEdit->text());
+    student.setAddress(ui->addressLineEdit->text());
 
     if (ui->majorComboBox->currentIndex()){
         student.setSubject("이과");
@@ -124,7 +128,8 @@ void Manager::registStudent() {
         student.setGender("여성");
     }
 
-    QList<QString> list = {QString::number(student.getId()), student.getName(),student.getGender(),student.getSubject()};
+    QList<QString> list = {QString::number(student.getId()), student.getName(),student.getGender(),student.getSubject(),
+                           student.getBirthday(), student.getPhone(), student.getAddress()};
 
     ui->studentTableWidget->insertRow(rowNum);
     for (int i = 0; i < list.size(); ++i) {
