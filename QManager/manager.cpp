@@ -10,6 +10,7 @@
 #include <QFileDialog>
 #include <QCheckBox>
 #include <QTableWidget>
+#include <QMessageBox>
 
 
 
@@ -20,6 +21,12 @@ Manager::Manager(QWidget *parent)
 {
     ui->setupUi(this);
     QString filePathGrade = "C:/Users/change10/Desktop/grade.csv";
+
+    ui->studentTableWidget->setColumnWidth(4, 150);
+    ui->studentTableWidget->setColumnWidth(5, 150);
+    ui->studentTableWidget->setColumnWidth(6, 150);
+    ui->studentTableWidget->setColumnWidth(7, 30);  //4567 칼럼 폭 조정
+
 
     readGradeFile(filePathGrade);
 
@@ -32,6 +39,8 @@ Manager::Manager(QWidget *parent)
     connect(ui->saveStudentButton, SIGNAL(clicked()), SLOT(saveStudentFile()));
     connect(ui->registStudentButton, SIGNAL(clicked()), SLOT(registStudent()));
     connect(ui->deleteStudentButton, SIGNAL(clicked()), SLOT(deleteStudent()));
+    connect(ui->studentTableWidget->horizontalHeader(), &QHeaderView::sectionClicked, this, &Manager::HeaderClicked);
+    //체크박스 헤더 칼럼 클릭시 전체 체크 or 해제
 
 }
 
@@ -110,7 +119,7 @@ void Manager::registStudent() {
 
     Student student;
     int rowNum = ui->studentTableWidget->rowCount();
-    student.setId(rowNum);
+    student.setId(ui->IdLineEdit->text());
     student.setName(ui->nameLineEdit->text());
     student.setBirthday(ui->birthLineEdit->text());
     student.setPhone(ui->phoneLineEdit->text());
@@ -128,7 +137,7 @@ void Manager::registStudent() {
         student.setGender("여성");
     }
 
-    QList<QString> list = {QString::number(student.getId()), student.getName(),student.getGender(),student.getSubject(),
+    QList<QString> list = {student.getId(), student.getName(),student.getGender(),student.getSubject(),
                            student.getBirthday(), student.getPhone(), student.getAddress()};
 
     ui->studentTableWidget->insertRow(rowNum);
@@ -143,16 +152,79 @@ void Manager::registStudent() {
     QHBoxLayout *layout = new QHBoxLayout(widget);
 
     layout->addWidget(checkbox);
-    layout->setAlignment(Qt::AlignCenter); // Center the checkbox in the layout
-    layout->setContentsMargins(0, 0, 0, 0); // Remove margins to fully center the checkbox
+    layout->setAlignment(Qt::AlignCenter); // 체크박스 중앙정렬
+    layout->setContentsMargins(0, 0, 0, 0); // 마진제거
     widget->setLayout(layout);
 
     ui->studentTableWidget->setCellWidget(rowNum, lastColumn, widget);
 }
 
 void Manager::deleteStudent() {
-    ui->studentTableWidget->removeRow(ui->studentTableWidget->currentRow());
-    ui->studentTableWidget->setCurrentCell(-1, -1);
+
+    bool Checked = false;
+
+    for (int row = 0; row < ui->studentTableWidget->rowCount(); ++row) {
+        QWidget *widget = ui->studentTableWidget->cellWidget(row, ui->studentTableWidget->columnCount() - 1);
+        if (widget) {
+            QCheckBox *checkbox = widget->findChild<QCheckBox *>(); //체크박스 위젯들을 하나씩 검사
+            if (checkbox && checkbox->isChecked()) {
+                Checked = true;
+                break;
+            }
+        }
+    }
+
+    // 만약 체크된 체크박스가 있다면 삭제 처리 수행
+    if (Checked) {
+        for (int row = ui->studentTableWidget->rowCount() - 1; row >= 0; --row) {
+            QWidget *widget = ui->studentTableWidget->cellWidget(row, ui->studentTableWidget->columnCount() - 1);
+            if (widget) {
+                QCheckBox *checkbox = widget->findChild<QCheckBox *>();
+                if (checkbox && checkbox->isChecked()) {
+                    ui->studentTableWidget->removeRow(row);
+                }
+            }
+        }
+    } else {
+
+        QMessageBox::warning(this, "Warning", "삭제하려는 학생을 먼저 체크해주세요"); //체크된 체크박스가 없다면 경고창을 띄운다
+    }
+
+    // ui->studentTableWidget->removeRow(ui->studentTableWidget->currentRow());
+    // ui->studentTableWidget->setCurrentCell(-1, -1);
+}
+
+void Manager::HeaderClicked(int column) {
+    // 체크박스가 있는 칼럼의 인덱스를 확인합니다.
+    int checkboxColumn = ui->studentTableWidget->columnCount() - 1;
+
+    // 체크박스가 있는 칼럼이 클릭된 경우
+    if (column == checkboxColumn) {
+        bool allChecked = true;
+
+        // 현재 모든 체크박스의 상태를 확인합니다.
+        for (int row = 0; row < ui->studentTableWidget->rowCount(); ++row) {
+            QWidget *widget = ui->studentTableWidget->cellWidget(row, checkboxColumn);
+            if (widget) {
+                QCheckBox *checkbox = widget->findChild<QCheckBox *>();
+                if (checkbox && !checkbox->isChecked()) {
+                    allChecked = false;
+                    break;
+                }
+            }
+        }
+
+        // 체크박스의 상태를 반전시킵니다. (모두 선택 or 모두 해제)
+        for (int row = 0; row < ui->studentTableWidget->rowCount(); ++row) {
+            QWidget *widget = ui->studentTableWidget->cellWidget(row, checkboxColumn);
+            if (widget) {
+                QCheckBox *checkbox = widget->findChild<QCheckBox *>();
+                if (checkbox) {
+                    checkbox->setChecked(!allChecked);
+                }
+            }
+        }
+    }
 }
 
 

@@ -1,7 +1,7 @@
 #include "student.h"
 
 
-Student::Student(QString name, QString subject, int id, QString gender,
+Student::Student(QString name, QString subject, QString id, QString gender,
         QString birthday, QString phone, QString address) {
     this->name = name;
     this->subject = subject;
@@ -23,10 +23,10 @@ QString Student::getSubject() {
 void Student::setSubject(QString subject) {
     this->subject = subject;
 }
-void Student::setId(int id) {
+void Student::setId(QString id) {
     this->id = id;
 }
-int Student::getId() {
+QString Student::getId() {
     return id;
 }
 double Student::getavgScore() {

@@ -13,28 +13,34 @@ class Student {
     QString subject;
     QString gender;
     QString birthday;
-    QString phonenumber;
+    QString phone;
     QString address;
 
-    int id;
+    QString id;
     double avgScore = 0;
 
 public:
     Student() {this->name = ""; this->id = 0; this->subject = ""; this->gender = "";
-            this->birthday = ""; this->phonenumber = ""; this->address = "";}
-    Student(QString name, QString subject, int id, QString gender,\
-            QString birthday, QString phonenumber, QString address);
+            this->birthday = ""; this->phone = ""; this->address = "";}
+    Student(QString name, QString subject, QString id, QString gender,\
+            QString birthday, QString phone, QString address);
     QString getName();
     void setName(QString name);
     QString getSubject();
     void setSubject(QString subject);
-    void setId(int id);
-    int getId();
+    void setId(QString id);
+    QString getId();
     void setavgScore(double avgScore);
     double getavgScore();
-    virtual void setScore(int, int);
     void setGender(QString gender);
     QString getGender();
+    void setBirthday(QString birthday);
+    QString getBirthday();
+    void setPhone(QString phone);
+    QString getPhone();
+    void setAddress(QString address);
+    QString getAddress();
+
 };
 
 #endif // STUDENT_H

@@ -31,5 +31,7 @@ public slots:
     void registStudent();
     void deleteStudent();
     void readGradeFile(const QString &filePath);
+    void HeaderClicked(int column);
+
 };
 #endif // MAINWINDOW_H

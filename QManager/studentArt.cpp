@@ -3,7 +3,7 @@
 StudentArt::StudentArt() {
 
 }
-StudentArt::StudentArt(QString name, QString subject, int id, QString gender,
+StudentArt::StudentArt(QString name, QString subject, QString id, QString gender,
                        QString birthday, QString phonenumber, QString address) {
     setName(name);
     setSubject(subject);

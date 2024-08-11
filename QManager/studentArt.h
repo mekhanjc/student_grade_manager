@@ -9,8 +9,8 @@ class StudentArt : public Student {
 
 public:
     StudentArt();
-    StudentArt(QString name, QString subject, int id, QString gender,\
-               QString birthday, QString phonenumber, QString address);
+    StudentArt(QString name, QString subject, QString id, QString gender,\
+               QString birthday, QString phone, QString address);
     void setScore(QString subject, int score);
 };
 
