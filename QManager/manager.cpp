@@ -117,7 +117,14 @@ void Manager::registStudent() {
     } else {
         student.setSubject("문과");
     }
-    QList<QString> list = {QString::number(student.getId()), student.getName()};
+
+    if (ui->maleRadioButton->isChecked()) {
+        student.setGender("남성");
+    } else if(ui->femaleRadioButton->isChecked()) {
+        student.setGender("여성");
+    }
+
+    QList<QString> list = {QString::number(student.getId()), student.getName(),student.getGender(),student.getSubject()};
 
     ui->studentTableWidget->insertRow(rowNum);
     for (int i = 0; i < list.size(); ++i) {

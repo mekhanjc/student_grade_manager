@@ -38,3 +38,9 @@ void Student::setavgScore(double avgScore) {
 void Student::setScore(int, int) {
 
 }
+void Student::setGender(QString gender){
+    this->gender = gender;
+}
+QString Student::getGender(){
+    return gender;
+}

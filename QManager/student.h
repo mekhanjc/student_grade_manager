@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include <vector>
-#include <memory>
 #include <QString>
 #include <QMap>
 
@@ -34,6 +33,8 @@ public:
     void setavgScore(double avgScore);
     double getavgScore();
     virtual void setScore(int, int);
+    void setGender(QString gender);
+    QString getGender();
 };
 
 #endif // STUDENT_H
