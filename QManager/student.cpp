@@ -23,10 +23,10 @@ QString Student::getSubject() {
 void Student::setSubject(QString subject) {
     this->subject = subject;
 }
-void Student::setId(QString id) {
+void Student::setId(int id) {
     this->id = id;
 }
-QString Student::getId() {
+int Student::getId() {
     return id;
 }
 void Student::setGender(QString gender){
@@ -58,36 +58,4 @@ double Student::getavgScore() {
 }
 void Student::setavgScore(double avgScore) {
     this->avgScore = avgScore;
-}
-
-void Student::setGender(QString gender){
-    this->gender = gender;
-}
-
-QString Student::getGender(){
-    return gender;
-}
-
-void Student::setBirthday(QString birthday){
-    this->birthday = birthday;
-}
-
-QString Student::getBirthday(){
-    return birthday;
-}
-
-void Student::setPhone(QString phone){
-    this->phone = phone;
-}
-
-QString Student::getPhone(){
-    return phone;
-}
-
-void Student::setAddress(QString address){
-    this->address = address;
-}
-
-QString Student::getAddress(){
-    return address;
 }

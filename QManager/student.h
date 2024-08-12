@@ -41,14 +41,6 @@ public:
     QString getAddress();
     void setavgScore(double avgScore);
     double getavgScore();
-    void setGender(QString gender);
-    QString getGender();
-    void setBirthday(QString birthday);
-    QString getBirthday();
-    void setPhone(QString phone);
-    QString getPhone();
-    void setAddress(QString address);
-    QString getAddress();
 
 };
 

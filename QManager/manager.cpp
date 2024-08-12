@@ -40,10 +40,8 @@ Manager::Manager(QWidget *parent)
     connect(ui->openGradeButton, SIGNAL(clicked()), SLOT(openGradeFile()));
     connect(ui->recallGradeButton, SIGNAL(clicked()), SLOT(recallGradeFile()));
     connect(ui->saveGradeButton, SIGNAL(clicked()), SLOT(saveGradeFile()));
-    
-    connect(ui->studentTableWidget->horizontalHeader(), &QHeaderView::sectionClicked, this, &Manager::HeaderClicked);
-    //체크박스 헤더 칼럼 클릭시 전체 체크 or 해제
 
+    connect(ui->studentTableWidget->horizontalHeader(), &QHeaderView::sectionClicked, this, &Manager::HeaderClicked);
 }
 
 Manager::~Manager()
@@ -67,7 +65,6 @@ void Manager::openStudentFile() {
     QTextStream in(&file);
     in.setEncoding(QStringConverter::LastEncoding);
 
-    bool firstLine = true;
     int rowCount = 0;
     ui->studentTableWidget->setRowCount(rowCount);
     ui->studentTableWidget->setEditTriggers(QTableWidget::NoEditTriggers);
@@ -77,9 +74,21 @@ void Manager::openStudentFile() {
         QStringList fields = line.split(",");
 
         ui->studentTableWidget->insertRow(rowCount);
-        for (int i = 0; i < fields.size(); ++i) {
+
+        for (int i = 1; i < fields.size(); ++i) {
             ui->studentTableWidget->setItem(rowCount, i, new QTableWidgetItem(fields[i]));
         }
+        int firstColumn = 0;
+        QCheckBox *checkbox = new QCheckBox();
+        QWidget *widget = new QWidget();
+        QHBoxLayout *layout = new QHBoxLayout(widget);
+
+        layout->addWidget(checkbox);
+        layout->setAlignment(Qt::AlignCenter); // 체크박스 중앙정렬
+        layout->setContentsMargins(0, 0, 0, 0); // 마진제거
+        widget->setLayout(layout);
+
+        ui->studentTableWidget->setCellWidget(rowCount, firstColumn, widget);
         ++rowCount;
     }
 
@@ -119,9 +128,13 @@ void Manager::saveStudentFile() {
 
 void Manager::registStudent() {
 
+    ui->studentTableWidget->setSortingEnabled(false);
+
     Student student;
     int rowNum = ui->studentTableWidget->rowCount();
-    student.setId(rowNum+1);
+
+    QString id = ui->idLineEdit->text();
+    student.setId(id.toInt());
     student.setName(ui->nameLineEdit->text());
 
     QString selectedGender;
@@ -143,30 +156,78 @@ void Manager::registStudent() {
         student.getSubject(), student.getBirthday(), student.getPhoneNumber(), student.getAddress()};
 
     ui->studentTableWidget->insertRow(rowNum);
+
+
+    int firstColumn = 0;
+    QCheckBox *checkbox = new QCheckBox();
+    QWidget *widget = new QWidget();
+    QHBoxLayout *layout = new QHBoxLayout(widget);
+
+    layout->addWidget(checkbox);
+    layout->setAlignment(Qt::AlignCenter); // 체크박스 중앙정렬
+    layout->setContentsMargins(0, 0, 0, 0); // 마진제거
+    widget->setLayout(layout);
+
+    ui->studentTableWidget->setCellWidget(rowNum, firstColumn, widget);
+
     for (int i = 1; i <= list.size(); ++i) {
-        ui->studentTableWidget->setItem(rowNum, i, new QTableWidgetItem(list[i-1]));
+        if (i == 1) {
+            QTableWidgetItem *item = new QTableWidgetItem;
+            item->setData(Qt::EditRole, list[i-1].toInt());
+            ui->studentTableWidget->setItem(rowNum, i, item);
+        }
+        else
+            ui->studentTableWidget->setItem(rowNum, i, new QTableWidgetItem(list[i-1]));
+
         ui->studentTableWidget->item(rowNum, i)->setTextAlignment(Qt::AlignCenter);
     }
 
-    QTableWidgetItem *checkboxItem = new QTableWidgetItem();
-    checkboxItem->setCheckState(Qt::Unchecked);
-    ui->studentTableWidget->setItem(rowNum, 0, checkboxItem);
+    ui->studentTableWidget->setSortingEnabled(true);
 
+    ui->idLineEdit->clear();
     ui->nameLineEdit->clear();
-    ui->majorComboBox->clear();
     ui->birthLineEdit->clear();
     ui->phoneLineEdit->clear();
     ui->addressLineEdit->clear();
 }
 
 void Manager::deleteStudent() {
-    for (int row = ui->studentTableWidget->rowCount() - 1; row >= 0; --row) {
-        QTableWidgetItem *checkboxItem = ui->studentTableWidget->item(row, 0);
-        if (checkboxItem && checkboxItem->checkState() == Qt::Checked) {
-            ui->studentTableWidget->removeRow(row);
+    ui->studentTableWidget->removeRow(ui->studentTableWidget->currentRow());
+    ui->studentTableWidget->setCurrentCell(-1, -1);
+
+    bool Checked = false;
+
+    for (int row = 0; row < ui->studentTableWidget->rowCount(); ++row) {
+        QWidget *widget = ui->studentTableWidget->cellWidget(row, 0);
+        if (widget) {
+            QCheckBox *checkbox = widget->findChild<QCheckBox *>(); //체크박스 위젯들을 하나씩 검사
+            if (checkbox && checkbox->isChecked()) {
+                Checked = true;
+                break;
+            }
         }
     }
+
+    // 만약 체크된 체크박스가 있다면 삭제 처리 수행
+    if (Checked) {
+        for (int row = ui->studentTableWidget->rowCount() - 1; row >= 0; --row) {
+            QWidget *widget = ui->studentTableWidget->cellWidget(row, 0);
+            if (widget) {
+                QCheckBox *checkbox = widget->findChild<QCheckBox *>();
+                if (checkbox && checkbox->isChecked()) {
+                    ui->studentTableWidget->removeRow(row);
+                }
+            }
+        }
+    } else {
+
+        QMessageBox::warning(this, "Warning", "삭제하려는 학생을 먼저 체크해주세요"); //체크된 체크박스가 없다면 경고창을 띄운다
+    }
+
+    // ui->studentTableWidget->removeRow(ui->studentTableWidget->currentRow());
+    // ui->studentTableWidget->setCurrentCell(-1, -1);
 }
+
 
 
 void Manager::addSubject() {
@@ -280,6 +341,40 @@ void Manager::recallGradeFile() {
 
 void Manager::saveGradeFile() {
 
+}
+
+
+void Manager::HeaderClicked(int column) {
+    // 체크박스가 있는 칼럼의 인덱스를 확인합니다.
+    int checkboxColumn = 0;
+
+    // 체크박스가 있는 칼럼이 클릭된 경우
+    if (column == checkboxColumn) {
+        bool allChecked = true;
+
+        // 현재 모든 체크박스의 상태를 확인합니다.
+        for (int row = 0; row < ui->studentTableWidget->rowCount(); ++row) {
+            QWidget *widget = ui->studentTableWidget->cellWidget(row, checkboxColumn);
+            if (widget) {
+                QCheckBox *checkbox = widget->findChild<QCheckBox *>();
+                if (checkbox && !checkbox->isChecked()) {
+                    allChecked = false;
+                    break;
+                }
+            }
+        }
+
+        // 체크박스의 상태를 반전시킵니다. (모두 선택 or 모두 해제)
+        for (int row = 0; row < ui->studentTableWidget->rowCount(); ++row) {
+            QWidget *widget = ui->studentTableWidget->cellWidget(row, checkboxColumn);
+            if (widget) {
+                QCheckBox *checkbox = widget->findChild<QCheckBox *>();
+                if (checkbox) {
+                    checkbox->setChecked(!allChecked);
+                }
+            }
+        }
+    }
 }
 
 

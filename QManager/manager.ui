@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1004</width>
-    <height>600</height>
+    <height>639</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,7 @@
       <x>10</x>
       <y>10</y>
       <width>991</width>
-      <height>561</height>
+      <height>601</height>
      </rect>
     </property>
     <property name="currentIndex">
@@ -33,10 +33,10 @@
      <widget class="QWidget" name="formLayoutWidget">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>70</y>
-        <width>201</width>
-        <height>397</height>
+        <x>10</x>
+        <y>40</y>
+        <width>214</width>
+        <height>492</height>
        </rect>
       </property>
       <layout class="QFormLayout" name="formLayout">
@@ -51,16 +51,23 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QLineEdit" name="IdLineEdit"/>
+        <widget class="QLineEdit" name="idLineEdit"/>
        </item>
        <item row="1" column="0">
+        <widget class="QLabel" name="Label_6">
+         <property name="text">
+          <string>학과</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
         <widget class="QLabel" name="Label">
          <property name="text">
           <string>이름</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="1">
+       <item row="2" column="1">
         <widget class="QLineEdit" name="nameLineEdit">
          <property name="toolTip">
           <string>이름을 저장합니다.</string>
@@ -73,14 +80,14 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="0">
+       <item row="3" column="0">
         <widget class="QLabel" name="Label_2">
          <property name="text">
           <string>성별</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="1">
+       <item row="3" column="1">
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
           <widget class="QRadioButton" name="maleRadioButton">
@@ -98,70 +105,21 @@
          </item>
         </layout>
        </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="Label_6">
-         <property name="text">
-          <string>학과</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
-        <widget class="QComboBox" name="majorComboBox">
-         <property name="toolTip">
-          <string>문과, 이과를 구분해서 저장합니다</string>
-         </property>
-         <property name="editable">
-          <bool>false</bool>
-         </property>
-         <property name="currentText">
-          <string>문과</string>
-         </property>
-         <property name="placeholderText">
-          <string/>
-         </property>
-         <property name="frame">
-          <bool>true</bool>
-         </property>
-         <item>
-          <property name="text">
-           <string>문과</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>이과</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="3" column="0">
+       <item row="4" column="0">
         <widget class="QLabel" name="Label_3">
          <property name="text">
           <string>생년월일</string>
          </property>
         </widget>
        </item>
-       <item row="3" column="1">
-        <widget class="QLineEdit" name="birthLineEdit">
-         <property name="toolTip">
-          <string>생년월일을 저장합니다.</string>
-         </property>
-         <property name="placeholderText">
-          <string>0000.00.00</string>
-         </property>
-         <property name="clearButtonEnabled">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="0">
+       <item row="5" column="0">
         <widget class="QLabel" name="Label_4">
          <property name="text">
           <string>전화번호</string>
          </property>
         </widget>
        </item>
-       <item row="4" column="1">
+       <item row="5" column="1">
         <widget class="QLineEdit" name="phoneLineEdit">
          <property name="toolTip">
           <string>전화번호를 저장합니다.</string>
@@ -174,14 +132,14 @@
          </property>
         </widget>
        </item>
-       <item row="5" column="0">
+       <item row="6" column="0">
         <widget class="QLabel" name="Label_5">
          <property name="text">
           <string>주소</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="1">
+       <item row="6" column="1">
         <widget class="QLineEdit" name="addressLineEdit">
          <property name="toolTip">
           <string>주소를 저장합니다.</string>
@@ -194,7 +152,7 @@
          </property>
         </widget>
        </item>
-       <item row="8" column="0" colspan="2">
+       <item row="7" column="1">
         <layout class="QGridLayout" name="gridLayout">
          <property name="sizeConstraint">
           <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
@@ -241,6 +199,48 @@
          </item>
         </layout>
        </item>
+       <item row="4" column="1">
+        <widget class="QLineEdit" name="birthLineEdit">
+         <property name="toolTip">
+          <string>생년월일을 저장합니다.</string>
+         </property>
+         <property name="placeholderText">
+          <string>0000.00.00</string>
+         </property>
+         <property name="clearButtonEnabled">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QComboBox" name="majorComboBox">
+         <property name="toolTip">
+          <string>문과, 이과를 구분해서 저장합니다</string>
+         </property>
+         <property name="editable">
+          <bool>false</bool>
+         </property>
+         <property name="currentText">
+          <string>문과</string>
+         </property>
+         <property name="placeholderText">
+          <string/>
+         </property>
+         <property name="frame">
+          <bool>true</bool>
+         </property>
+         <item>
+          <property name="text">
+           <string>문과</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>이과</string>
+          </property>
+         </item>
+        </widget>
+       </item>
       </layout>
      </widget>
      <widget class="QTableWidget" name="studentTableWidget">
@@ -284,7 +284,7 @@
       </attribute>
       <column>
        <property name="text">
-        <string> </string>
+        <string>선택</string>
        </property>
       </column>
       <column>
@@ -322,58 +322,6 @@
         <string>주소</string>
        </property>
       </column>
-     </widget>
-     <widget class="QWidget" name="gridLayoutWidget">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>430</y>
-        <width>168</width>
-        <height>86</height>
-       </rect>
-      </property>
-      <layout class="QGridLayout" name="gridLayout">
-       <item row="0" column="1">
-        <widget class="QPushButton" name="deleteStudentButton">
-         <property name="toolTip">
-          <string>학생정보를 삭제합니다.</string>
-         </property>
-         <property name="text">
-          <string>삭제</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QPushButton" name="openStudentButton">
-         <property name="toolTip">
-          <string>저장된 학생리스트를 불러옵니다.</string>
-         </property>
-         <property name="text">
-          <string>불러오기</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QPushButton" name="saveStudentButton">
-         <property name="toolTip">
-          <string>학생리스트를 저장합니다.</string>
-         </property>
-         <property name="text">
-          <string>저장하기</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QPushButton" name="registStudentButton">
-         <property name="toolTip">
-          <string>학생정보를 등록합니다.</string>
-         </property>
-         <property name="text">
-          <string>등록</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
      </widget>
     </widget>
     <widget class="QWidget" name="tab_2">
@@ -703,7 +651,7 @@
      <x>0</x>
      <y>0</y>
      <width>1004</width>
-     <height>18</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

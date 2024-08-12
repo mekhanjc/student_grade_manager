@@ -38,8 +38,7 @@ public slots:
     void recallGradeFile();
     void saveGradeFile();
 
-    void readGradeFile(const QString &filePath);
     void HeaderClicked(int column);
-
+    void readGradeFile(const QString &filePath);
 };
 #endif // MAINWINDOW_H
