@@ -42,6 +42,14 @@ Manager::Manager(QWidget *parent)
     connect(ui->saveGradeButton, SIGNAL(clicked()), SLOT(saveGradeFile()));
 
     connect(ui->studentTableWidget->horizontalHeader(), &QHeaderView::sectionClicked, this, &Manager::HeaderClicked);
+
+    //도움말 푸쉬버튼 connect
+    connect(ui->helppushButton_1, SIGNAL(clicked()), SLOT(showHelp()));
+    connect(ui->helppushButton_2, SIGNAL(clicked()), SLOT(showHelp()));
+    connect(ui->helppushButton_3, SIGNAL(clicked()), SLOT(showHelp()));
+
+
+
 }
 
 Manager::~Manager()
@@ -419,3 +427,43 @@ void Manager::readGradeFile(const QString &filePath) {
     ui->gradeTableWidget->setSortingEnabled(true);
     file.close();
 }
+
+void Manager::showHelp(){
+
+    QPushButton *button = qobject_cast<QPushButton*>(sender());
+    QMessageBox msgBox;
+
+    //msgBox.setStyleSheet("QMessageBox QLabel { font-family: 'Malgun Gothic'; font-size: 14px;  }");
+    msgBox.setStyleSheet("QPushButton { width: 10px; height: 5px; }");  // 메시지박스 버튼 크기 조정
+
+    if (button == ui->helppushButton_1) {
+        msgBox.setWindowTitle("학생관리탭 도움말");
+        msgBox.setText("학생관리 도움말\n\n\n"
+                       "1. 등록 : '등록' 클릭시 오른쪽 테이블에 학생의 정보가 입력됩니다.\n\n"
+                       "2. 삭제 : 체크 표시한 학생을 테이블에서 삭제합니다.\n\n"
+                       "3. 저장하기 : 해당 테이블을 CSV 파일 형식으로 저장합니다.\n\n"
+                       "4. 불러오기 : 저장된 테이블 CSV 파일을 불러옵니다.");
+    }
+    else if(button == ui->helppushButton_2){
+        msgBox.setWindowTitle("성적관리탭 도움말");
+        msgBox.setText("성적관리 도움말\n\n\n"
+                       "1. 과목추가/삭제 : 테이블에 과목을 추가합니다.\n\n"
+                       "2. 학생검색 : 테이블에서 입력된 이름의 학생을 검색합니다.\n\n"
+                       "3. 성적삭제 : 해당 테이블에 입력된 학생들의 정보를 CSV파일 형식으로 저장합니다.\n\n"
+                       "4. 전체삭제 : 테이블 전체의 데이터를 삭제합니다..\n\n"
+                       "5. 불러오기 :\n\n"
+                       "6. 되돌리기 :\n\n"
+                       "7. 저장하기 :");
+    }
+    else if(button == ui->helppushButton_3){
+        msgBox.setWindowTitle("성적표출력탭 도움말");
+        msgBox.setText("성적표출력 도움말\n\n\n"
+                       "1. 이름검색 : 출력하고자 하는 학생의 이름을 검색해주세요.\n\n"
+                       "2. 출력하기 : 현재 테이블을 출력합니다.\n\n");
+
+    }
+
+    msgBox.exec();
+
+}
+

@@ -40,5 +40,7 @@ public slots:
 
     void HeaderClicked(int column);
     void readGradeFile(const QString &filePath);
+
+    void showHelp();
 };
 #endif // MAINWINDOW_H

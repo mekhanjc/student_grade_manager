@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -35,8 +35,8 @@
        <rect>
         <x>10</x>
         <y>40</y>
-        <width>214</width>
-        <height>492</height>
+        <width>224</width>
+        <height>506</height>
        </rect>
       </property>
       <layout class="QFormLayout" name="formLayout">
@@ -323,6 +323,19 @@
        </property>
       </column>
      </widget>
+     <widget class="QPushButton" name="helppushButton_1">
+      <property name="geometry">
+       <rect>
+        <x>900</x>
+        <y>10</y>
+        <width>80</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>도움말</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="tab_2">
      <attribute name="title">
@@ -532,6 +545,19 @@
        <string>전체 삭제</string>
       </property>
      </widget>
+     <widget class="QPushButton" name="helppushButton_2">
+      <property name="geometry">
+       <rect>
+        <x>900</x>
+        <y>10</y>
+        <width>80</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>도움말</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="tab_5">
      <attribute name="title">
@@ -642,6 +668,19 @@
        <string>이름 검색</string>
       </property>
      </widget>
+     <widget class="QPushButton" name="helppushButton_3">
+      <property name="geometry">
+       <rect>
+        <x>900</x>
+        <y>10</y>
+        <width>80</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>도움말</string>
+      </property>
+     </widget>
     </widget>
    </widget>
   </widget>
@@ -651,7 +690,7 @@
      <x>0</x>
      <y>0</y>
      <width>1004</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
