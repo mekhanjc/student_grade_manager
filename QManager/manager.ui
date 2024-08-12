@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>1004</width>
     <height>600</height>
    </rect>
   </property>
@@ -17,10 +17,10 @@
    <widget class="QTabWidget" name="tabWidget">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>20</y>
-      <width>781</width>
-      <height>541</height>
+      <x>10</x>
+      <y>10</y>
+      <width>991</width>
+      <height>561</height>
      </rect>
     </property>
     <property name="currentIndex">
@@ -34,9 +34,9 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>50</y>
+        <y>70</y>
         <width>201</width>
-        <height>374</height>
+        <height>397</height>
        </rect>
       </property>
       <layout class="QFormLayout" name="formLayout">
@@ -52,8 +52,14 @@
        </item>
        <item row="0" column="1">
         <widget class="QLineEdit" name="nameLineEdit">
-         <property name="text">
-          <string/>
+         <property name="toolTip">
+          <string>이름을 저장합니다.</string>
+         </property>
+         <property name="placeholderText">
+          <string>홍길동</string>
+         </property>
+         <property name="clearButtonEnabled">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -82,36 +88,6 @@
          </item>
         </layout>
        </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="Label_3">
-         <property name="text">
-          <string>생년월일</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
-        <widget class="QLineEdit" name="birthLineEdit"/>
-       </item>
-       <item row="4" column="0">
-        <widget class="QLabel" name="Label_4">
-         <property name="text">
-          <string>전화번호</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="1">
-        <widget class="QLineEdit" name="phoneLineEdit"/>
-       </item>
-       <item row="5" column="0">
-        <widget class="QLabel" name="Label_5">
-         <property name="text">
-          <string>주소</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="1">
-        <widget class="QLineEdit" name="addressLineEdit"/>
-       </item>
        <item row="2" column="0">
         <widget class="QLabel" name="Label_6">
          <property name="text">
@@ -121,11 +97,20 @@
        </item>
        <item row="2" column="1">
         <widget class="QComboBox" name="majorComboBox">
+         <property name="toolTip">
+          <string>문과, 이과를 구분해서 저장합니다</string>
+         </property>
+         <property name="editable">
+          <bool>false</bool>
+         </property>
          <property name="currentText">
-          <string/>
+          <string>문과</string>
          </property>
          <property name="placeholderText">
-          <string>학과를 선택하세요.</string>
+          <string/>
+         </property>
+         <property name="frame">
+          <bool>true</bool>
          </property>
          <item>
           <property name="text">
@@ -139,31 +124,97 @@
          </item>
         </widget>
        </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="Label_3">
+         <property name="text">
+          <string>생년월일</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLineEdit" name="birthLineEdit">
+         <property name="toolTip">
+          <string>생년월일을 저장합니다.</string>
+         </property>
+         <property name="placeholderText">
+          <string>0000.00.00</string>
+         </property>
+         <property name="clearButtonEnabled">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="Label_4">
+         <property name="text">
+          <string>전화번호</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QLineEdit" name="phoneLineEdit">
+         <property name="toolTip">
+          <string>전화번호를 저장합니다.</string>
+         </property>
+         <property name="placeholderText">
+          <string>010-0000-0000</string>
+         </property>
+         <property name="clearButtonEnabled">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="Label_5">
+         <property name="text">
+          <string>주소</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QLineEdit" name="addressLineEdit">
+         <property name="toolTip">
+          <string>주소를 저장합니다.</string>
+         </property>
+         <property name="placeholderText">
+          <string>OO시 OO군 OO구</string>
+         </property>
+         <property name="clearButtonEnabled">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
-     <widget class="QTableWidget" name="tableWidgetStudent">
+     <widget class="QTableWidget" name="studentTableWidget">
       <property name="geometry">
        <rect>
-        <x>230</x>
-        <y>20</y>
-        <width>531</width>
-        <height>471</height>
+        <x>240</x>
+        <y>40</y>
+        <width>731</width>
+        <height>491</height>
        </rect>
       </property>
+      <property name="sortingEnabled">
+       <bool>true</bool>
+      </property>
+      <attribute name="horizontalHeaderVisible">
+       <bool>true</bool>
+      </attribute>
       <attribute name="horizontalHeaderCascadingSectionResizes">
        <bool>false</bool>
       </attribute>
       <attribute name="horizontalHeaderDefaultSectionSize">
-       <number>80</number>
+       <number>90</number>
       </attribute>
       <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
-       <bool>false</bool>
+       <bool>true</bool>
       </attribute>
       <attribute name="horizontalHeaderStretchLastSection">
        <bool>true</bool>
       </attribute>
       <attribute name="verticalHeaderVisible">
-       <bool>true</bool>
+       <bool>false</bool>
       </attribute>
       <attribute name="verticalHeaderCascadingSectionResizes">
        <bool>false</bool>
@@ -174,6 +225,16 @@
       <attribute name="verticalHeaderStretchLastSection">
        <bool>false</bool>
       </attribute>
+      <column>
+       <property name="text">
+        <string> </string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>학번</string>
+       </property>
+      </column>
       <column>
        <property name="text">
         <string>이름</string>
@@ -208,38 +269,50 @@
      <widget class="QWidget" name="gridLayoutWidget">
       <property name="geometry">
        <rect>
-        <x>40</x>
-        <y>420</y>
-        <width>160</width>
+        <x>30</x>
+        <y>430</y>
+        <width>168</width>
         <height>86</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout">
        <item row="0" column="1">
-        <widget class="QPushButton" name="studentEditButton">
-         <property name="text">
-          <string>수정</string>
+        <widget class="QPushButton" name="deleteStudentButton">
+         <property name="toolTip">
+          <string>학생정보를 삭제합니다.</string>
          </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QPushButton" name="studentRegistButton">
          <property name="text">
-          <string>등록</string>
+          <string>삭제</string>
          </property>
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="QPushButton" name="studentOpenButton">
+        <widget class="QPushButton" name="openStudentButton">
+         <property name="toolTip">
+          <string>저장된 학생리스트를 불러옵니다.</string>
+         </property>
          <property name="text">
           <string>불러오기</string>
          </property>
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QPushButton" name="studentSaveButton">
+        <widget class="QPushButton" name="saveStudentButton">
+         <property name="toolTip">
+          <string>학생리스트를 저장합니다.</string>
+         </property>
          <property name="text">
           <string>저장하기</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QPushButton" name="registStudentButton">
+         <property name="toolTip">
+          <string>학생정보를 등록합니다.</string>
+         </property>
+         <property name="text">
+          <string>등록</string>
          </property>
         </widget>
        </item>
@@ -250,7 +323,7 @@
      <attribute name="title">
       <string>성적 관리</string>
      </attribute>
-     <widget class="QTableWidget" name="tableWidgetGrade">
+     <widget class="QTableWidget" name="gradeTableWidget">
       <property name="geometry">
        <rect>
         <x>110</x>
@@ -265,8 +338,48 @@
       <attribute name="horizontalHeaderDefaultSectionSize">
        <number>75</number>
       </attribute>
+      <column>
+       <property name="text">
+        <string>이름</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>학번</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>수학</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>과학</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>영어</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>사회</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>평균</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>선택</string>
+       </property>
+      </column>
      </widget>
-     <widget class="QPushButton" name="pushButton">
+     <widget class="QPushButton" name="addSubjectButton">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -275,11 +388,14 @@
         <height>24</height>
        </rect>
       </property>
+      <property name="toolTip">
+       <string>과목을 추가합니다.</string>
+      </property>
       <property name="text">
        <string>과목 추가</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_2">
+     <widget class="QPushButton" name="deleteSubjectButton">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -288,11 +404,14 @@
         <height>24</height>
        </rect>
       </property>
+      <property name="toolTip">
+       <string>과목을 삭제합니다.</string>
+      </property>
       <property name="text">
        <string>과목 삭제</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_3">
+     <widget class="QPushButton" name="saveGradeButton">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -301,11 +420,14 @@
         <height>24</height>
        </rect>
       </property>
+      <property name="toolTip">
+       <string>성적파일을 저장합니다.</string>
+      </property>
       <property name="text">
        <string>저장하기</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_4">
+     <widget class="QPushButton" name="recallGradeButton">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -314,11 +436,14 @@
         <height>24</height>
        </rect>
       </property>
+      <property name="toolTip">
+       <string>성적파일을 되돌립니다.</string>
+      </property>
       <property name="text">
        <string>되돌리기</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_5">
+     <widget class="QPushButton" name="searchStudentButton">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -327,11 +452,14 @@
         <height>24</height>
        </rect>
       </property>
+      <property name="toolTip">
+       <string>성적을 관리할 학생을 검색합니다.</string>
+      </property>
       <property name="text">
        <string>학생 검색</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_8">
+     <widget class="QPushButton" name="openGradeButton">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -341,19 +469,13 @@
        </rect>
       </property>
       <property name="toolTip">
-       <string>asdfsdf</string>
-      </property>
-      <property name="statusTip">
-       <string/>
-      </property>
-      <property name="accessibleDescription">
-       <string/>
+       <string>성적파일을 불러옵니다.</string>
       </property>
       <property name="text">
        <string>불러오기</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_9">
+     <widget class="QPushButton" name="deleteGradeButton">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -362,11 +484,14 @@
         <height>24</height>
        </rect>
       </property>
+      <property name="toolTip">
+       <string>해당학생의 성적을 삭제합니다.</string>
+      </property>
       <property name="text">
-       <string>학생 삭제</string>
+       <string>성적 삭제</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_10">
+     <widget class="QPushButton" name="deleteAllGradeButton">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -374,6 +499,9 @@
         <width>75</width>
         <height>24</height>
        </rect>
+      </property>
+      <property name="toolTip">
+       <string>전체학생의 성적을 삭제합니다.</string>
       </property>
       <property name="text">
        <string>전체 삭제</string>
@@ -384,30 +512,109 @@
      <attribute name="title">
       <string>성적표 출력</string>
      </attribute>
+     <widget class="QTableWidget" name="tableWidgetGrade_2">
+      <property name="geometry">
+       <rect>
+        <x>110</x>
+        <y>30</y>
+        <width>651</width>
+        <height>481</height>
+       </rect>
+      </property>
+      <attribute name="horizontalHeaderDefaultSectionSize">
+       <number>75</number>
+      </attribute>
+      <row>
+       <property name="text">
+        <string>New Row</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>New Row</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>New Row</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>New Row</string>
+       </property>
+      </row>
+      <column>
+       <property name="text">
+        <string>이름</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>학번</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>수학</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>과학</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>영어</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>사회</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>평균</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>출력하기</string>
+       </property>
+      </column>
+     </widget>
      <widget class="QPushButton" name="printButton">
       <property name="geometry">
        <rect>
-        <x>60</x>
-        <y>120</y>
-        <width>75</width>
+        <x>10</x>
+        <y>80</y>
+        <width>81</width>
         <height>24</height>
        </rect>
       </property>
+      <property name="toolTip">
+       <string>체크된 학생의 성적을 출력합니다.</string>
+      </property>
       <property name="text">
-       <string>출력</string>
+       <string>출력하기</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_6">
+     <widget class="QPushButton" name="pushButton_12">
       <property name="geometry">
        <rect>
-        <x>60</x>
-        <y>160</y>
-        <width>75</width>
+        <x>10</x>
+        <y>40</y>
+        <width>81</width>
         <height>24</height>
        </rect>
       </property>
+      <property name="toolTip">
+       <string>이름으로 검색합니다.</string>
+      </property>
       <property name="text">
-       <string>검색</string>
+       <string>이름 검색</string>
       </property>
      </widget>
     </widget>
@@ -418,8 +625,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
-     <height>22</height>
+     <width>1004</width>
+     <height>18</height>
     </rect>
    </property>
   </widget>

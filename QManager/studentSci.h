@@ -4,15 +4,14 @@
 #include "student.h"
 
 class StudentSci : public Student {
-    int science;
-    int math;
+
+    QMap<QString, int> SciSubjectList;
+
 public:
     StudentSci();
-    StudentSci(string name, string subject, int id);
-    void setScore(int science, int math);
-    int getScience() const;
-    int getMath() const;
-
+    StudentSci(QString name, QString subject, int id, QString gender,\
+               QString birthday, QString phonenumber, QString address);
+    void setScore(QString subject, int score);
 };
 
 

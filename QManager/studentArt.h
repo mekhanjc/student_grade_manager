@@ -4,15 +4,14 @@
 #include "student.h"
 
 class StudentArt : public Student {
-    int economics;
-    int arts;
+
+    QMap<QString, int> ArtSubjectList;
+
 public:
     StudentArt();
-    StudentArt(string name, string subject, int id);
-    void setScore(int economics, int arts);
-    int getEconomics() const;
-    int getArts() const;
-
+    StudentArt(QString name, QString subject, int id, QString gender,\
+               QString birthday, QString phonenumber, QString address);
+    void setScore(QString subject, int score);
 };
 
 #endif // STUDENTART_H
