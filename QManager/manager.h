@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 #include <QFile>
-
+#include <QTableWidget>
 
 class QMdiArea;
 
@@ -38,7 +38,7 @@ public slots:
     void recallGradeFile();
     void saveGradeFile();
 
+    void updateRowAverages(int row, int column);
     void HeaderClicked(int column);
-    void readGradeFile(const QString &filePath);
 };
 #endif // MAINWINDOW_H

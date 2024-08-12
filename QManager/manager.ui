@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -343,29 +343,9 @@
       <attribute name="horizontalHeaderDefaultSectionSize">
        <number>75</number>
       </attribute>
-      <row>
-       <property name="text">
-        <string>New Row</string>
-       </property>
-      </row>
-      <row>
-       <property name="text">
-        <string>New Row</string>
-       </property>
-      </row>
-      <row>
-       <property name="text">
-        <string>New Row</string>
-       </property>
-      </row>
-      <row>
-       <property name="text">
-        <string>New Row</string>
-       </property>
-      </row>
       <column>
        <property name="text">
-        <string>이름</string>
+        <string>선택</string>
        </property>
       </column>
       <column>
@@ -375,32 +355,12 @@
       </column>
       <column>
        <property name="text">
-        <string>수학</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>과학</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>영어</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>사회</string>
+        <string>이름</string>
        </property>
       </column>
       <column>
        <property name="text">
         <string>평균</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>선택</string>
        </property>
       </column>
      </widget>
