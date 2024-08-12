@@ -40,6 +40,10 @@ Manager::Manager(QWidget *parent)
     connect(ui->openGradeButton, SIGNAL(clicked()), SLOT(openGradeFile()));
     connect(ui->recallGradeButton, SIGNAL(clicked()), SLOT(recallGradeFile()));
     connect(ui->saveGradeButton, SIGNAL(clicked()), SLOT(saveGradeFile()));
+    
+    connect(ui->studentTableWidget->horizontalHeader(), &QHeaderView::sectionClicked, this, &Manager::HeaderClicked);
+    //체크박스 헤더 칼럼 클릭시 전체 체크 or 해제
+
 }
 
 Manager::~Manager()
