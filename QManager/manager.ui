@@ -502,6 +502,31 @@
        <string>도움말</string>
       </property>
      </widget>
+     <widget class="QComboBox" name="gradecomboBox">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>170</y>
+        <width>75</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <item>
+       <property name="text">
+        <string>전체</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>문과</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>이과</string>
+       </property>
+      </item>
+     </widget>
     </widget>
     <widget class="QWidget" name="tab_5">
      <attribute name="title">
@@ -634,7 +659,7 @@
      <x>0</x>
      <y>0</y>
      <width>1004</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

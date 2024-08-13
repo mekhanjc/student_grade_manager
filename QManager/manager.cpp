@@ -54,6 +54,9 @@ Manager::Manager(QWidget *parent)
     connect(ui->helppushButton_2, SIGNAL(clicked()), SLOT(showHelp()));
     connect(ui->helppushButton_3, SIGNAL(clicked()), SLOT(showHelp()));
 
+    //성적관리탭 문과 이과 분류
+    connect(ui->gradecomboBox, SIGNAL(currentIndexChanged(int)), SLOT(classifySubject()));
+
 
 
 }
@@ -238,6 +241,9 @@ void Manager::registStudent() {
     student.setPhoneNumber(ui->phoneLineEdit->text());
     student.setAddress(ui->addressLineEdit->text());
 
+
+    currentStudent.append(student);// 학생등록할때마다 currentStudent 백터에 객체 하나씩 저장
+
     QList<QString> list = {QString::number(student.getId()), student.getName(), student.getGender(),
         student.getSubject(), student.getBirthday(), student.getPhoneNumber(), student.getAddress()};
 
@@ -329,6 +335,7 @@ void Manager::deleteStudent() {
                 if (checkbox && checkbox->isChecked()) {
                     QString id = ui->studentTableWidget->item(row, 1)->text();
                     ui->studentTableWidget->removeRow(row);
+                    currentStudent.removeAt(row);           // 체크된 행 지울때 currentStudent 벡터도 같이 삭제 (인덱스가 동일하기때문)
 
                     for (int rowNum = ui->gradeTableWidget->rowCount() - 1; rowNum >= 0; --rowNum) {
                         if (ui->gradeTableWidget->item(rowNum, 1)->text() == id) {
@@ -607,7 +614,6 @@ void Manager::showHelp(){
     }
 
     msgBox.exec();
-
 }
 
 
@@ -641,3 +647,36 @@ void Manager::createMenubar() {
     connect(helpAction, &QAction::triggered, this, &Manager::showHelp);
     infoMenu->addAction(helpAction);
 }
+
+void Manager::classifySubject(){
+
+    QString currentText = ui->gradecomboBox->currentText(); //콤보박스 현재텍스트 받아옴
+
+    int rowCount = ui->gradeTableWidget->rowCount(); //행수 받아옴
+
+    if(currentText == "전체"){
+        for (int row = 0; row < rowCount; ++row){
+            ui->gradeTableWidget->setRowHidden(row, false);  //콤보박스가 전체인 경우 행을 하나씩 모두 출력
+        }
+    }
+    else if(currentText == "문과"){
+        for (int row = 0; row < rowCount; ++row) {
+            ui->gradeTableWidget->setRowHidden(row, true);
+
+            if(currentText == currentStudent[row].getSubject()){
+                 ui->gradeTableWidget->setRowHidden(row, false);  //콤보박스가 문과인경우 : currentStudent 인덱스 subject값 받아와서 일치하면 행 출력
+            }
+        }
+    }
+    else if(currentText == "이과"){
+        for (int row = 0; row < rowCount; ++row) {
+            ui->gradeTableWidget->setRowHidden(row, true);
+
+            if(currentText == currentStudent[row].getSubject()){
+                ui->gradeTableWidget->setRowHidden(row, false);     //콤보박스가 이과인경우 : currentStudent 인덱스 subject값 받아와서 일치하면 행 출력
+            }
+        }
+    }
+    for(int i=0;i<currentStudent.size();++i)
+        qDebug() << currentStudent[i].getSubject();
+ }

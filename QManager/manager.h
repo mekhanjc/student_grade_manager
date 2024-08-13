@@ -8,6 +8,7 @@
 #include <QFile>
 #include <QTableWidget>
 #include <QList>
+#include <QVector>
 
 class QMdiArea;
 
@@ -31,6 +32,7 @@ private:
     Ui::Manager *ui;
     QList<StudentArt> studentArtList;
     QList<StudentSci> studentSciList;
+    QVector<Student> currentStudent; // 현재 등록된 학생 객체를 저장하는 멤버 변수
 
 public slots:
     void openStudentFile();
@@ -51,5 +53,6 @@ public slots:
     void gradeHeaderClicked(int column);
 
     void showHelp();
+    void classifySubject();
 };
 #endif // MAINWINDOW_H
