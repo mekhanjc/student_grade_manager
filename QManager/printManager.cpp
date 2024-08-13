@@ -73,7 +73,7 @@ void PrintManager::print(QPrinter &printer, QTableWidget *tableWidget) {
     }
     // 테이블의 각 행과 열을 읽어 출력
     for (int row = 0; row < tableWidget->rowCount(); ++row) {
-        for (int col = 0; col < tableWidget->columnCount(); ++col) {
+        for (int col = 1; col < tableWidget->columnCount(); ++col) {
             QTableWidgetItem *item = tableWidget->item(row, col);
             QString cellText = item ? item->text() : "";
 

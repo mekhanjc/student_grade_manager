@@ -24,6 +24,9 @@ Manager::Manager(QWidget *parent)
     });
 
     ui->studentTableWidget->setColumnWidth(0, 10);
+    ui->gradeTableWidget->setColumnWidth(0, 10);
+
+    ui->studentTableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     connect(ui->openStudentButton, SIGNAL(clicked()), SLOT(openStudentFile()));
     connect(ui->saveStudentButton, SIGNAL(clicked()), SLOT(saveStudentFile()));
@@ -32,13 +35,16 @@ Manager::Manager(QWidget *parent)
 
     connect(ui->addSubjectButton, SIGNAL(clicked()), SLOT(addSubject()));
     connect(ui->deleteSubjectButton, SIGNAL(clicked()), SLOT(deleteSubject()));
+
     connect(ui->searchStudentButton, SIGNAL(clicked()), SLOT(searchStudent()));
+    connect(ui->deleteGradeButton, SIGNAL(clicked()), SLOT(deleteGrade()));
 
-    connect(ui->openGradeButton, SIGNAL(clicked()), SLOT(openGradeFile()));
+    connect(ui->openGradeButton, SIGNAL(clicked()), SLOT(openStudentFile()));
     connect(ui->recallGradeButton, SIGNAL(clicked()), SLOT(recallGradeFile()));
-    connect(ui->saveGradeButton, SIGNAL(clicked()), SLOT(saveGradeFile()));
+    connect(ui->saveGradeButton, SIGNAL(clicked()), SLOT(saveStudentFile()));
 
-    connect(ui->studentTableWidget->horizontalHeader(), &QHeaderView::sectionClicked, this, &Manager::HeaderClicked);
+    connect(ui->studentTableWidget->horizontalHeader(), &QHeaderView::sectionClicked, this, &Manager::studentHeaderClicked);
+    connect(ui->gradeTableWidget->horizontalHeader(), &QHeaderView::sectionClicked, this, &Manager::gradeHeaderClicked);
     connect(ui->gradeTableWidget, &QTableWidget::cellChanged, this, &Manager::updateRowAverages);
 }
 
@@ -65,17 +71,49 @@ void Manager::openStudentFile() {
 
     int rowCount = 0;
     ui->studentTableWidget->setRowCount(rowCount);
+    ui->gradeTableWidget->setRowCount(rowCount);
     ui->studentTableWidget->setEditTriggers(QTableWidget::NoEditTriggers);
+
+
+    int studentHeaderSize = 8;
+
+    // Read the first line to check the header
+    QString firstLine = in.readLine();
+    QString expectedHeader = "선택,학번,이름,성별,학과,생년월일,전화번호,주소,선택,학번,이름,";
+
+    if (!firstLine.startsWith(expectedHeader)) {
+        QMessageBox::warning(nullptr, "Invalid File", "적합하지 않은 파일입니다.");
+        file.close();
+        return;
+    }
+
+    QStringList headers = firstLine.split(",");
+    ui->gradeTableWidget->setColumnCount(headers.size() - studentHeaderSize);
+
+    // Set headers
+    ui->studentTableWidget->setHorizontalHeaderLabels(headers.mid(0, studentHeaderSize));
+    ui->gradeTableWidget->setHorizontalHeaderLabels(headers.mid(studentHeaderSize, headers.size()));
 
     while (!in.atEnd()) {
         QString line = in.readLine();
         QStringList fields = line.split(",");
 
         ui->studentTableWidget->insertRow(rowCount);
+        ui->gradeTableWidget->insertRow(rowCount);
 
-        for (int i = 1; i < fields.size(); ++i) {
-            ui->studentTableWidget->setItem(rowCount, i, new QTableWidgetItem(fields[i]));
+        for (int i = 1; i < studentHeaderSize; ++i) {
+            QTableWidgetItem* item = new QTableWidgetItem(fields[i]);
+            item->setTextAlignment(Qt::AlignCenter);
+            ui->studentTableWidget->setItem(rowCount, i, item);
         }
+
+        for (int i = studentHeaderSize + 1; i < headers.size(); ++i) {
+            QTableWidgetItem* item = new QTableWidgetItem(fields[i]);
+            qDebug() << fields[i];
+            item->setTextAlignment(Qt::AlignCenter);
+            ui->gradeTableWidget->setItem(rowCount, i - studentHeaderSize, item);
+        }
+
         int firstColumn = 0;
         QCheckBox *checkbox = new QCheckBox();
         QWidget *widget = new QWidget();
@@ -87,10 +125,22 @@ void Manager::openStudentFile() {
         widget->setLayout(layout);
 
         ui->studentTableWidget->setCellWidget(rowCount, firstColumn, widget);
+
+        checkbox = new QCheckBox();
+        widget = new QWidget();
+        layout = new QHBoxLayout(widget);
+
+        layout->addWidget(checkbox);
+        layout->setAlignment(Qt::AlignCenter); // 체크박스 중앙정렬
+        layout->setContentsMargins(0, 0, 0, 0); // 마진제거
+        widget->setLayout(layout);
+
+        ui->gradeTableWidget->setCellWidget(rowCount, firstColumn, widget);
         ++rowCount;
     }
 
     ui->studentTableWidget->setSortingEnabled(true);
+    ui->gradeTableWidget->setSortingEnabled(true);
 }
 
 void Manager::saveStudentFile() {
@@ -107,6 +157,19 @@ void Manager::saveStudentFile() {
     QTextStream out(&file);
     out.setEncoding(QStringConverter::LastEncoding);
 
+    // Write headers
+    QStringList headers;
+    for (int col = 0; col < ui->studentTableWidget->columnCount(); ++col) {
+        headers << ui->studentTableWidget->horizontalHeaderItem(col)->text();
+    }
+
+    // Add grade table headers
+    for (int col = 0; col < ui->gradeTableWidget->columnCount(); ++col) {
+        headers << ui->gradeTableWidget->horizontalHeaderItem(col)->text();
+    }
+
+    out << headers.join(',') << '\n';
+
     // Write table data
     for (int row = 0; row < ui->studentTableWidget->rowCount(); ++row) {
         QStringList rowItems;
@@ -118,6 +181,22 @@ void Manager::saveStudentFile() {
                 rowItems << "";
             }
         }
+
+        QString id = ui->studentTableWidget->item(row, 1)->text();
+        for (int rowNum = ui->gradeTableWidget->rowCount() - 1; rowNum >= 0; --rowNum) {
+            if (ui->gradeTableWidget->item(rowNum, 1)->text() == id) {
+                for (int col = 0; col < ui->gradeTableWidget->columnCount(); ++col) {
+                    QTableWidgetItem* item = ui->gradeTableWidget->item(rowNum, col);
+                    if (item) {
+                        rowItems << item->text();
+                    } else {
+                        rowItems << "";
+                    }
+                }
+                break;
+            }
+        }
+
         out << rowItems.join(',') << '\n';
     }
 
@@ -180,6 +259,33 @@ void Manager::registStudent() {
         ui->studentTableWidget->item(rowNum, i)->setTextAlignment(Qt::AlignCenter);
     }
 
+    ui->gradeTableWidget->setSortingEnabled(false);
+    ui->gradeTableWidget->insertRow(rowNum);
+    QTableWidgetItem *item = new QTableWidgetItem;
+    item->setData(Qt::EditRole, list[0].toInt());
+    item->setTextAlignment(Qt::AlignCenter);
+    ui->gradeTableWidget->setItem(rowNum, 1, item);
+    item = new QTableWidgetItem(list[1]);
+    item->setTextAlignment(Qt::AlignCenter);
+    ui->gradeTableWidget->setItem(rowNum, 2, item);
+    for (int column = 3; column < ui->gradeTableWidget->columnCount()-1; ++column) {
+        item = new QTableWidgetItem();
+        item->setTextAlignment(Qt::AlignCenter);
+        ui->gradeTableWidget->setItem(rowNum, column, item);
+    }
+
+    checkbox = new QCheckBox();
+    widget = new QWidget();
+    layout = new QHBoxLayout(widget);
+    layout->addWidget(checkbox);
+    layout->setAlignment(Qt::AlignCenter); // 체크박스 중앙정렬
+    layout->setContentsMargins(0, 0, 0, 0); // 마진제거
+    widget->setLayout(layout);
+    ui->gradeTableWidget->setCellWidget(rowNum, 0, widget);
+
+    ui->gradeTableWidget->setSortingEnabled(true);
+
+
     ui->studentTableWidget->setSortingEnabled(true);
 
     ui->idLineEdit->clear();
@@ -187,11 +293,10 @@ void Manager::registStudent() {
     ui->birthLineEdit->clear();
     ui->phoneLineEdit->clear();
     ui->addressLineEdit->clear();
+
 }
 
 void Manager::deleteStudent() {
-    ui->studentTableWidget->removeRow(ui->studentTableWidget->currentRow());
-    ui->studentTableWidget->setCurrentCell(-1, -1);
 
     bool Checked = false;
 
@@ -213,7 +318,15 @@ void Manager::deleteStudent() {
             if (widget) {
                 QCheckBox *checkbox = widget->findChild<QCheckBox *>();
                 if (checkbox && checkbox->isChecked()) {
+                    QString id = ui->studentTableWidget->item(row, 1)->text();
                     ui->studentTableWidget->removeRow(row);
+
+                    for (int rowNum = ui->gradeTableWidget->rowCount() - 1; rowNum >= 0; --rowNum) {
+                        if (ui->gradeTableWidget->item(rowNum, 1)->text() == id) {
+                            ui->gradeTableWidget->removeRow(rowNum);
+                            break;
+                        }
+                    }
                 }
             }
         }
@@ -221,9 +334,6 @@ void Manager::deleteStudent() {
 
         QMessageBox::warning(this, "경고", "삭제하려는 학생을 먼저 체크해주세요"); //체크된 체크박스가 없다면 경고창을 띄운다
     }
-
-    // ui->studentTableWidget->removeRow(ui->studentTableWidget->currentRow());
-    // ui->studentTableWidget->setCurrentCell(-1, -1);
 }
 
 
@@ -244,7 +354,9 @@ void Manager::addSubject() {
 
         int rowCount = ui->gradeTableWidget->rowCount();
         for (int row = 0; row < rowCount; ++row) {
-            ui->gradeTableWidget->setItem(row, positionToAdd, new QTableWidgetItem());
+            QTableWidgetItem *item = new QTableWidgetItem();
+            item->setTextAlignment(Qt::AlignCenter);
+            ui->gradeTableWidget->setItem(row, positionToAdd, item);
         }
     }
 }
@@ -282,8 +394,8 @@ void Manager::searchStudent() {
                                                 tr("이름 : "), QLineEdit::Normal,
                                                 QString(), &ok);
 
+    int rowCount = ui->gradeTableWidget->rowCount();
     if (ok && !studentName.isEmpty()) {
-        int rowCount = ui->gradeTableWidget->rowCount();
         bool found = false;
 
         for (int row = 0; row < rowCount; ++row) {
@@ -291,7 +403,7 @@ void Manager::searchStudent() {
         }
 
         for (int row = 0; row < rowCount; ++row) {
-            QTableWidgetItem *nameItem = ui->gradeTableWidget->item(row, 0);
+            QTableWidgetItem *nameItem = ui->gradeTableWidget->item(row, 2);
             if (nameItem && nameItem->text().contains(studentName, Qt::CaseInsensitive)) {
                 ui->gradeTableWidget->setRowHidden(row, false);
                 found = true;
@@ -301,75 +413,52 @@ void Manager::searchStudent() {
         if (!found) {
             QMessageBox::information(this, tr("결과 없음"), tr("이름이 '%1'인 학생은 없습니다.").arg(studentName));
         }
+    } else if (studentName.isEmpty()) {
+        for (int row = 0; row < rowCount; ++row) {
+            ui->gradeTableWidget->setRowHidden(row, false);
+        }
     }
 }
 
+void Manager::deleteGrade() {
+    bool Checked = false;
 
-void Manager::openGradeFile() {
-    QString fileName = QFileDialog::getOpenFileName(this, "Open File", "", "CSV Files (*.csv);;All Files (*)");
-    if (fileName.isEmpty()) {
-        return;
-    }
-
-    QFile file(fileName);
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qDebug() << "Failed to open file:" << file.errorString();
-        return;
-    }
-
-    QTextStream in(&file);
-    in.setEncoding(QStringConverter::LastEncoding);
-
-    bool firstLine = true;
-    int rowCount = 0;
-    ui->gradeTableWidget->setRowCount(rowCount);
-    ui->gradeTableWidget->setEditTriggers(QTableWidget::NoEditTriggers);
-
-    while (!in.atEnd()) {
-        QString line = in.readLine();
-        QStringList fields = line.split(",");
-
-        if (firstLine) {
-            ui->gradeTableWidget->insertColumn(0);
-            fields.prepend("선택");
-            ui->gradeTableWidget->setColumnCount(fields.size());
-            ui->gradeTableWidget->setHorizontalHeaderLabels(fields);
-            firstLine = false;
-        } else {
-            ui->gradeTableWidget->insertRow(rowCount);
-            for (int i = 1; i <= fields.size(); ++i) {
-                ui->gradeTableWidget->setItem(rowCount, i, new QTableWidgetItem(fields[i-1]));
+    for (int row = 0; row < ui->gradeTableWidget->rowCount(); ++row) {
+        QWidget *widget = ui->gradeTableWidget->cellWidget(row, 0);
+        if (widget) {
+            QCheckBox *checkbox = widget->findChild<QCheckBox *>(); //체크박스 위젯들을 하나씩 검사
+            if (checkbox && checkbox->isChecked()) {
+                Checked = true;
+                break;
             }
-            QCheckBox *checkbox = new QCheckBox();
-            QWidget *widget = new QWidget();
-            QHBoxLayout *layout = new QHBoxLayout(widget);
-
-            layout->addWidget(checkbox);
-            layout->setAlignment(Qt::AlignCenter); // 체크박스 중앙정렬
-            layout->setContentsMargins(0, 0, 0, 0); // 마진제거
-            widget->setLayout(layout);
-
-            ui->studentTableWidget->setCellWidget(rowCount, 0, widget);
-            ++rowCount;
         }
     }
 
+    // 만약 체크된 체크박스가 있다면 삭제 처리 수행
+    if (Checked) {
+        for (int row = ui->gradeTableWidget->rowCount() - 1; row >= 0; --row) {
+            QWidget *widget = ui->gradeTableWidget->cellWidget(row, 0);
+            if (widget) {
+                QCheckBox *checkbox = widget->findChild<QCheckBox *>();
+                if (checkbox && checkbox->isChecked()) {
+                    for (int column = 3; column < ui->gradeTableWidget->columnCount() - 1; ++column){
+                        ui->gradeTableWidget->item(row, column)->setText("");
+                    }
+                }
+            }
+        }
+    } else {
 
-
-
-    ui->gradeTableWidget->setSortingEnabled(true);
+        QMessageBox::warning(this, "경고", "삭제하려는 학생을 먼저 체크해주세요"); //체크된 체크박스가 없다면 경고창을 띄운다
+    }
 }
 
 void Manager::recallGradeFile() {
 
 }
 
-void Manager::saveGradeFile() {
 
-}
-
-
-void Manager::HeaderClicked(int column) {
+void Manager::studentHeaderClicked(int column) {
     // 체크박스가 있는 칼럼의 인덱스를 확인합니다.
     int checkboxColumn = 0;
 
@@ -402,6 +491,40 @@ void Manager::HeaderClicked(int column) {
     }
 }
 
+void Manager::gradeHeaderClicked(int column) {
+    // 체크박스가 있는 칼럼의 인덱스를 확인합니다.
+    int checkboxColumn = 0;
+
+    // 체크박스가 있는 칼럼이 클릭된 경우
+    if (column == checkboxColumn) {
+        bool allChecked = true;
+
+        // 현재 모든 체크박스의 상태를 확인합니다.
+        for (int row = 0; row < ui->gradeTableWidget->rowCount(); ++row) {
+            QWidget *widget = ui->gradeTableWidget->cellWidget(row, checkboxColumn);
+            if (widget) {
+                QCheckBox *checkbox = widget->findChild<QCheckBox *>();
+                if (checkbox && !checkbox->isChecked()) {
+                    allChecked = false;
+                    break;
+                }
+            }
+        }
+
+        // 체크박스의 상태를 반전시킵니다. (모두 선택 or 모두 해제)
+        for (int row = 0; row < ui->gradeTableWidget->rowCount(); ++row) {
+            QWidget *widget = ui->gradeTableWidget->cellWidget(row, checkboxColumn);
+            if (widget) {
+                QCheckBox *checkbox = widget->findChild<QCheckBox *>();
+                if (checkbox) {
+                    checkbox->setChecked(!allChecked);
+                }
+            }
+        }
+    }
+}
+
+
 
 void Manager::updateRowAverages(int row, int column) {
     QTableWidgetItem *item = ui->gradeTableWidget->item(row, column);
@@ -413,7 +536,7 @@ void Manager::updateRowAverages(int row, int column) {
     int count = 0;
     int colCount = ui->gradeTableWidget->columnCount();
 
-    for (int i = 0; i < colCount - 1; ++i) { // 마지막 열 제외
+    for (int i = 3; i < colCount - 1; ++i) { // 마지막 열 제외
         QTableWidgetItem *cellItem = ui->gradeTableWidget->item(row, i);
         if (cellItem && !cellItem->text().isEmpty()) {
             bool ok;

@@ -476,22 +476,6 @@
        <string>성적 삭제</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="deleteAllGradeButton">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>260</y>
-        <width>75</width>
-        <height>24</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>전체학생의 성적을 삭제합니다.</string>
-      </property>
-      <property name="text">
-       <string>전체 삭제</string>
-      </property>
-     </widget>
     </widget>
     <widget class="QWidget" name="tab_5">
      <attribute name="title">

@@ -1,9 +1,13 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "studentArt.h"
+#include "studentSci.h"
+
 #include <QMainWindow>
 #include <QFile>
 #include <QTableWidget>
+#include <QList>
 
 class QMdiArea;
 
@@ -24,6 +28,8 @@ public:
 
 private:
     Ui::Manager *ui;
+    QList<StudentArt> studentArtList;
+    QList<StudentSci> studentSciList;
 
 public slots:
     void openStudentFile();
@@ -33,12 +39,14 @@ public slots:
 
     void addSubject();
     void deleteSubject();
+
     void searchStudent();
-    void openGradeFile();
+    void deleteGrade();
+
     void recallGradeFile();
-    void saveGradeFile();
 
     void updateRowAverages(int row, int column);
-    void HeaderClicked(int column);
+    void studentHeaderClicked(int column);
+    void gradeHeaderClicked(int column);
 };
 #endif // MAINWINDOW_H
