@@ -48,5 +48,9 @@ public slots:
     void updateRowAverages(int row, int column);
     void studentHeaderClicked(int column);
     void gradeHeaderClicked(int column);
+    void HeaderClicked(int column);
+    void readGradeFile(const QString &filePath);
+
+    void showHelp();
 };
 #endif // MAINWINDOW_H
