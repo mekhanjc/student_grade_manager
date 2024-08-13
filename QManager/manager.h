@@ -25,6 +25,7 @@ class Manager : public QMainWindow
 public:
     Manager(QWidget *parent = nullptr);
     ~Manager();
+    void createMenubar();
 
 private:
     Ui::Manager *ui;

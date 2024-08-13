@@ -28,6 +28,8 @@ Manager::Manager(QWidget *parent)
 
     ui->studentTableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
+    createMenubar();
+
     connect(ui->openStudentButton, SIGNAL(clicked()), SLOT(openStudentFile()));
     connect(ui->saveStudentButton, SIGNAL(clicked()), SLOT(saveStudentFile()));
     connect(ui->registStudentButton, SIGNAL(clicked()), SLOT(registStudent()));
@@ -117,7 +119,6 @@ void Manager::openStudentFile() {
 
         for (int i = studentHeaderSize + 1; i < headers.size(); ++i) {
             QTableWidgetItem* item = new QTableWidgetItem(fields[i]);
-            qDebug() << fields[i];
             item->setTextAlignment(Qt::AlignCenter);
             ui->gradeTableWidget->setItem(rowCount, i - studentHeaderSize, item);
         }
@@ -590,19 +591,53 @@ void Manager::showHelp(){
                        "2. 학생검색 : 테이블에서 입력된 이름의 학생을 검색합니다.\n\n"
                        "3. 성적삭제 : 해당 테이블에 입력된 학생들의 정보를 CSV파일 형식으로 저장합니다.\n\n"
                        "4. 전체삭제 : 테이블 전체의 데이터를 삭제합니다..\n\n"
-                       "5. 불러오기 :\n\n"
-                       "6. 되돌리기 :\n\n"
-                       "7. 저장하기 :");
+                       "5. 불러오기 : 저장된 테이블 CSV 파일을 불러옵니다.\n\n"
+                       "6. 되돌리기 : 마지막으로 저장한 상태로 되돌립니다.\n\n"
+                       "7. 저장하기 : 해당 테이블을 CSV 파일 형식으로 저장합니다.");
     }
     else if(button == ui->helppushButton_3){
         msgBox.setWindowTitle("성적표출력탭 도움말");
         msgBox.setText("성적표출력 도움말\n\n\n"
                        "1. 이름검색 : 출력하고자 하는 학생의 이름을 검색해주세요.\n\n"
-                       "2. 출력하기 : 현재 테이블을 출력합니다.\n\n");
+                       "2. 출력하기 : 현재 테이블을 출력합니다.");
 
+    } else {
+        msgBox.setWindowTitle("도움말");
+        msgBox.setText("각 탭의 도움말 버튼을 클릭하세요.");
     }
 
     msgBox.exec();
 
 }
 
+
+void Manager::createMenubar() {
+    QMenuBar *menuBar = new QMenuBar(this);
+    setMenuBar(menuBar);
+
+    QMenu *fileMenu = menuBar->addMenu(tr("&File"));
+    QMenu *infoMenu = menuBar->addMenu(tr("&Info"));
+
+    QAction *openAction = new QAction(tr("&Open"), this);
+    openAction->setShortcut(tr("Ctrl+O"));
+    connect(openAction, &QAction::triggered, this, &Manager::openStudentFile);
+    fileMenu->addAction(openAction);
+
+    QAction *saveAction = new QAction(tr("&Save"), this);
+    saveAction->setShortcut(tr("Ctrl+S"));
+    connect(saveAction, &QAction::triggered, this, &Manager::saveStudentFile);
+    fileMenu->addAction(saveAction);
+
+    fileMenu->addSeparator();
+
+    QAction *quitAction = new QAction(tr("&Quit"), this);
+    quitAction->setShortcut(tr("Ctrl+Q"));
+    connect(quitAction, &QAction::triggered, qApp, &QApplication::quit);
+    fileMenu->addAction(quitAction);
+
+
+    QAction *helpAction = new QAction(tr("&Help"), this);
+    helpAction->setShortcut(tr("Ctrl+H"));
+    connect(helpAction, &QAction::triggered, this, &Manager::showHelp);
+    infoMenu->addAction(helpAction);
+}
