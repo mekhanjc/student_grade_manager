@@ -56,9 +56,10 @@ Manager::Manager(QWidget *parent)
 
     //성적관리탭 문과 이과 분류
     connect(ui->gradecomboBox, SIGNAL(currentIndexChanged(int)), SLOT(classifySubject()));
-
-
-
+    connect(ui->tabWidget, &QTabWidget::tabBarClicked, this, [&](int index){
+        if(index == 2)
+        p->printPreviewTable(ui->gradeTableWidget, ui->frame);
+    });
 }
 
 Manager::~Manager()
@@ -95,7 +96,7 @@ void Manager::openStudentFile() {
     QString expectedHeader = "선택,학번,이름,성별,학과,생년월일,전화번호,주소,선택,학번,이름,";
 
     if (!firstLine.startsWith(expectedHeader)) {
-        QMessageBox::warning(nullptr, "Invalid File", "적합하지 않은 파일입니다.");
+        QMessageBox::warning(nullptr, "Invalid File", "유효한 형식의 파일을 선택해주세요.");
         file.close();
         return;
     }
@@ -107,6 +108,8 @@ void Manager::openStudentFile() {
     ui->studentTableWidget->setHorizontalHeaderLabels(headers.mid(0, studentHeaderSize));
     ui->gradeTableWidget->setHorizontalHeaderLabels(headers.mid(studentHeaderSize, headers.size()));
 
+
+
     while (!in.atEnd()) {
         QString line = in.readLine();
         QStringList fields = line.split(",");
@@ -114,11 +117,23 @@ void Manager::openStudentFile() {
         ui->studentTableWidget->insertRow(rowCount);
         ui->gradeTableWidget->insertRow(rowCount);
 
+        Student* student = new Student();
+
         for (int i = 1; i < studentHeaderSize; ++i) {
             QTableWidgetItem* item = new QTableWidgetItem(fields[i]);
             item->setTextAlignment(Qt::AlignCenter);
             ui->studentTableWidget->setItem(rowCount, i, item);
+            switch (i) {
+            case 1: student->setId(fields[i].toInt()); break;
+            case 2: student->setName(fields[i]); break;
+            case 3: student->setGender(fields[i]); break;
+            case 4: student->setSubject(fields[i]); break;
+            case 5: student->setBirthday(fields[i]); break;
+            case 6: student->setPhoneNumber(fields[i]); break;
+            case 7: student->setAddress(fields[i]); break;
+            }
         }
+        studentList.append(student);
 
         for (int i = studentHeaderSize + 1; i < headers.size(); ++i) {
             QTableWidgetItem* item = new QTableWidgetItem(fields[i]);
@@ -219,12 +234,12 @@ void Manager::registStudent() {
 
     ui->studentTableWidget->setSortingEnabled(false);
 
-    Student student;
+    Student* student = new Student();
     int rowNum = ui->studentTableWidget->rowCount();
 
     QString id = ui->idLineEdit->text();
-    student.setId(id.toInt());
-    student.setName(ui->nameLineEdit->text());
+    student->setId(id.toInt());
+    student->setName(ui->nameLineEdit->text());
 
     QString selectedGender;
     if (ui->maleRadioButton->isChecked()) {
@@ -234,18 +249,18 @@ void Manager::registStudent() {
     } else {
         selectedGender = "없음";
     }
-    student.setGender(selectedGender);
+    student->setGender(selectedGender);
 
-    student.setSubject(ui->majorComboBox->currentText());
-    student.setBirthday(ui->birthLineEdit->text());
-    student.setPhoneNumber(ui->phoneLineEdit->text());
-    student.setAddress(ui->addressLineEdit->text());
+    student->setSubject(ui->majorComboBox->currentText());
+    student->setBirthday(ui->birthLineEdit->text());
+    student->setPhoneNumber(ui->phoneLineEdit->text());
+    student->setAddress(ui->addressLineEdit->text());
 
 
-    currentStudent.append(student);// 학생등록할때마다 currentStudent 백터에 객체 하나씩 저장
+    studentList.append(student);// 학생등록할때마다 studentList 백터에 객체 하나씩 저장
 
-    QList<QString> list = {QString::number(student.getId()), student.getName(), student.getGender(),
-        student.getSubject(), student.getBirthday(), student.getPhoneNumber(), student.getAddress()};
+    QList<QString> list = {QString::number(student->getId()), student->getName(), student->getGender(),
+        student->getSubject(), student->getBirthday(), student->getPhoneNumber(), student->getAddress()};
 
     ui->studentTableWidget->insertRow(rowNum);
 
@@ -335,11 +350,17 @@ void Manager::deleteStudent() {
                 if (checkbox && checkbox->isChecked()) {
                     QString id = ui->studentTableWidget->item(row, 1)->text();
                     ui->studentTableWidget->removeRow(row);
-                    currentStudent.removeAt(row);           // 체크된 행 지울때 currentStudent 벡터도 같이 삭제 (인덱스가 동일하기때문)
-
+                    // 성적 테이블에서 삭제
                     for (int rowNum = ui->gradeTableWidget->rowCount() - 1; rowNum >= 0; --rowNum) {
                         if (ui->gradeTableWidget->item(rowNum, 1)->text() == id) {
                             ui->gradeTableWidget->removeRow(rowNum);
+                            break;
+                        }
+                    }
+                    // 학생 리스트에서 삭제
+                    for (int rowNum = studentList.size() - 1; rowNum >= 0; --rowNum) {
+                        if (studentList[rowNum]->getId() == id.toInt()) {
+                            studentList.removeAt(rowNum);
                             break;
                         }
                     }
@@ -385,7 +406,7 @@ void Manager::deleteSubject() {
                                                 QString(), &ok);
 
     if (ok && !subjectName.isEmpty()) {
-        if (subjectName == "학번" || subjectName == "이름" || subjectName == "평균") {
+        if (subjectName == "선택" || subjectName == "학번" || subjectName == "이름" || subjectName == "평균") {
             QString message = subjectName + "은 삭제할 수 없습니다";
             QMessageBox::warning(this, "삭제 불가", message, QMessageBox::Ok);
             return;
@@ -663,8 +684,8 @@ void Manager::classifySubject(){
         for (int row = 0; row < rowCount; ++row) {
             ui->gradeTableWidget->setRowHidden(row, true);
 
-            if(currentText == currentStudent[row].getSubject()){
-                 ui->gradeTableWidget->setRowHidden(row, false);  //콤보박스가 문과인경우 : currentStudent 인덱스 subject값 받아와서 일치하면 행 출력
+            if(currentText == studentList[row]->getSubject()){
+                 ui->gradeTableWidget->setRowHidden(row, false);  //콤보박스가 문과인경우 : studentList 인덱스 subject값 받아와서 일치하면 행 출력
             }
         }
     }
@@ -672,11 +693,9 @@ void Manager::classifySubject(){
         for (int row = 0; row < rowCount; ++row) {
             ui->gradeTableWidget->setRowHidden(row, true);
 
-            if(currentText == currentStudent[row].getSubject()){
-                ui->gradeTableWidget->setRowHidden(row, false);     //콤보박스가 이과인경우 : currentStudent 인덱스 subject값 받아와서 일치하면 행 출력
+            if(currentText == studentList[row]->getSubject()){
+                ui->gradeTableWidget->setRowHidden(row, false);     //콤보박스가 이과인경우 : studentList 인덱스 subject값 받아와서 일치하면 행 출력
             }
         }
     }
-    for(int i=0;i<currentStudent.size();++i)
-        qDebug() << currentStudent[i].getSubject();
  }
