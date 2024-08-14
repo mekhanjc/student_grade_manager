@@ -7,6 +7,7 @@
 - 이 프로젝트는 Qt C++를 사용하여 개발된 성적 관리 시스템입니다.
 - 해당 시스템은 학생들의 성적을 입력, 저장, 수정, 조회, 출력할 수 있는 기능을 제공합니다.
 - Qt Creator를 통해 사용자 친화적인 GUI를 제작 및 프로그램에 적용하는것이 프로젝트의 목표입니다.
+> 마지막 하단에 간단한 UI 이미지 첨부했습니다.
 
 ## 주요 기능 :
 - 학생 정보 관리 >> 학생의 이름, 과목, 학번, 연락처, 주소 등의 정보를 입력하고 수정합니다.
@@ -27,20 +28,28 @@
 - 데이터 저장 >> 데이터를 저장 및 불러올 수 있으며, 저장 위치를 지정할 수 있습니다.
 - 성적표 출력 >> 출력결과물을 미리볼 수 있으며, 출력 버튼을 사용하여 출력할 수 있습니다
 
-
-## 폴더 구조 :
-- 소스 코드 파일 >> main.cpp/ manager.cpp/ printManager.cpp/ student.cpp/ studentArt.cpp/ studentSci.cpp
-- 헤더 파일 >> manager.h/ printManager.h/ student.h/ studentArt.h/ studentSci.h
-- UI 파일 >> manager.ui
-- 이미지 및 기타 리소스 파일 >> icon.qrc
-- Qt 프로젝트 파일 >> CMakeLists.txt
-
-
-## GitHub >> [https://github.com/mekhanjc/student_grade_manager]
-
 ## 참고 자료 :
 - Qt 공식 문서
 - C++ 언어 문서 및 교재
 
 
 > 포함된 Readme.txt 파일은 사용자가 프로젝트를 이해하고, 사용에 도움을 주기 위해 작성했습니다.
+
+
+
+# 이미지 첨부
+![tab1view](https://github.com/user-attachments/assets/11c960ee-538a-4a2f-8e86-86f638a60188)
+- 학생관리탭 화면입니다.
+- 학생정보를 등록,삭제, 파일로 저장 및 불러오기 가능합니다.
+  
+![image](https://github.com/user-attachments/assets/9a4bd660-5ec6-4f29-8147-0b0a54445e2f)
+- 성적관리탭 화면입니다.
+- 학생관리탭에서 등록한 학생리스트를 자동으로 받아옵니다.
+- 과목추가 및 성적입력,수정이 가능합니다.
+- 파일 입출력 기능 또한 구현했습니다.
+  
+![image](https://github.com/user-attachments/assets/a34185f2-b96b-4869-b74a-0d159b2ad420)
+- 성적표출력탭 입니다.
+- 출력될 성적표를 미리보기 형식으로 구현했습니다.
+
+
