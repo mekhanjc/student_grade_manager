@@ -1,5 +1,9 @@
 <RCC>
     <qresource prefix="/">
-        <file>icons/addStudent.png</file>
+        <file>icons/help.png</file>
+        <file>icons/print.png</file>
+        <file>icons/quit.png</file>
+        <file>icons/openFile.png</file>
+        <file>icons/saveFile.png</file>
     </qresource>
 </RCC>

@@ -11,7 +11,6 @@
 #include <QInputDialog>
 #include <QMessageBox>
 #include <QCheckBox>
-#include <QToolBar>
 #include <QAction>
 
 
@@ -30,6 +29,8 @@ Manager::Manager(QWidget *parent)
     ui->gradeTableWidget->setColumnWidth(0, 10);
 
     ui->studentTableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+
 
     createMenubar();
 
@@ -63,6 +64,14 @@ Manager::Manager(QWidget *parent)
         if(index == 2)
         p->printPreviewTable(ui->gradeTableWidget, ui->frame);
     });
+
+
+    //connect(ui->, SIGNAL(clicked()), SLOT(showHelp()));
+
+
+    ui->helppushButton_1->setIcon(QIcon(":/icons/help.png"));
+    ui->helppushButton_2->setIcon(QIcon(":/icons/help.png"));
+    ui->helppushButton_3->setIcon(QIcon(":/icons/help.png"));
 }
 
 Manager::~Manager()
@@ -604,13 +613,14 @@ void Manager::showHelp(){
     QPushButton *button = qobject_cast<QPushButton*>(sender());
     QMessageBox msgBox;
 
+
     //msgBox.setStyleSheet("QMessageBox QLabel { font-family: 'Malgun Gothic'; font-size: 14px;  }");
     msgBox.setStyleSheet("QPushButton { width: 10px; height: 5px; }");  // 메시지박스 버튼 크기 조정
 
     if (button == ui->helppushButton_1) {
         msgBox.setWindowTitle("학생관리탭 도움말");
         msgBox.setText("학생관리 도움말\n\n\n"
-                       "1. 등록 : '등록' 클릭시 오른쪽 테이블에 학생의 정보가 입력됩니다.\n\n"
+                       "1. 등록 : 오른쪽 테이블에 학생의 정보가 입력됩니다.\n\n"
                        "2. 삭제 : 체크 표시한 학생을 테이블에서 삭제합니다.\n\n"
                        "3. 저장하기 : 해당 테이블을 CSV 파일로 저장합니다.\n\n"
                        "4. 불러오기 : 저장된 CSV 파일을 테이블로 불러옵니다.");
@@ -620,17 +630,14 @@ void Manager::showHelp(){
         msgBox.setText("성적관리 도움말\n\n\n"
                        "1. 과목추가/삭제 : 테이블에 과목 칼럼을 추가합니다.\n\n"
                        "2. 학생검색 : 입력된 학생을 테이블에서 검색합니다.\n\n"
-                       "3. 성적삭제 : 해당 테이블에 입력된 학생들의 정보를 CSV파일 형식으로 저장합니다.\n\n"
-                       "4. 전체삭제 : 테이블 전체의 데이터를 삭제합니다..\n\n"
-                       "5. 불러오기 : 저장된 테이블 CSV 파일을 불러옵니다.\n\n"
-                       "6. 되돌리기 : 마지막으로 저장한 상태로 되돌립니다.\n\n"
-                       "7. 저장하기 : 해당 테이블을 CSV 파일 형식으로 저장합니다.");
+                       "3. 성적삭제 : 체크된 학생들의 성적을 삭제합니다\n\n"
+                       "4. 불러오기 : 저장된 테이블 CSV 파일을 불러옵니다.\n\n"
+                       "5. 저장하기 : 해당 테이블을 CSV 파일 형식으로 저장합니다.");
     }
     else if(button == ui->helppushButton_3){
         msgBox.setWindowTitle("성적표출력탭 도움말");
         msgBox.setText("성적표출력 도움말\n\n\n"
-                       "1. 이름검색 : 출력할 학생정보를 불러옵니다.\n\n"
-                       "2. 출력하기 : 현재 테이블을 출력합니다.");
+                       "1. 출력하기 : 프리뷰 테이블 그대로 출력합니다..\n\n");
 
     } else {
         msgBox.setWindowTitle("도움말");
@@ -648,26 +655,43 @@ void Manager::createMenubar() {
     QMenu *fileMenu = menuBar->addMenu(tr("&File"));
     QMenu *infoMenu = menuBar->addMenu(tr("&Info"));
 
-    QAction *openAction = new QAction(tr("&Open"), this);
+
+
+    QAction *openAction = new QAction(QIcon("openFile.png"),tr("&Open"), this);
     openAction->setShortcut(tr("Ctrl+O"));
+    openAction->setIcon(QIcon(":/icons/openFile.png"));
     connect(openAction, &QAction::triggered, this, &Manager::openStudentFile);
     fileMenu->addAction(openAction);
 
-    QAction *saveAction = new QAction(tr("&Save"), this);
+    fileMenu->addSeparator();
+
+    QAction *saveAction = new QAction(QIcon("saveFile.png"),tr("&Save"), this);
     saveAction->setShortcut(tr("Ctrl+S"));
+    saveAction->setIcon(QIcon(":/icons/saveFile.png"));
     connect(saveAction, &QAction::triggered, this, &Manager::saveStudentFile);
     fileMenu->addAction(saveAction);
 
     fileMenu->addSeparator();
 
-    QAction *quitAction = new QAction(tr("&Quit"), this);
+    QAction *quitAction = new QAction(QIcon("quit.png"),tr("&Quit"), this);
     quitAction->setShortcut(tr("Ctrl+Q"));
+    quitAction->setIcon(QIcon(":/icons/quit.png"));
     connect(quitAction, &QAction::triggered, qApp, &QApplication::quit);
     fileMenu->addAction(quitAction);
 
+    fileMenu->addSeparator();
 
-    QAction *helpAction = new QAction(tr("&Help"), this);
+    PrintManager *p = new PrintManager;
+    QAction *printAction = new QAction(QIcon("print.png"),tr("&Print"), this);
+    printAction->setShortcut(tr("Ctrl+P"));
+    printAction->setIcon(QIcon(":/icons/print.png"));
+    connect(printAction, &QAction::triggered, this, [=](){p->printTable(ui->gradeTableWidget);});
+    fileMenu->addAction(printAction);
+
+
+    QAction *helpAction = new QAction(QIcon("help.png"),tr("&Help"), this);
     helpAction->setShortcut(tr("Ctrl+H"));
+    helpAction->setIcon(QIcon(":/icons/help.png"));
     connect(helpAction, &QAction::triggered, this, &Manager::showHelp);
     infoMenu->addAction(helpAction);
 }
@@ -703,12 +727,4 @@ void Manager::classifySubject(){
     }
  }
 
-QAction *Manager::makeAction(QString icon, QString name, QString toolTip, QObject* recv, const char* slot)
-{
-    QAction *act = new QAction(name, this);
-    if(icon.length( ))
-        act->setIcon(QIcon(icon));
-    act->setStatusTip(toolTip);
-    connect(act, SIGNAL(triggered()), recv, slot);
-    return act;
-}
+
