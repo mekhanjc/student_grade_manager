@@ -4,6 +4,7 @@
 #include "printManager.h"
 #include "studentArt.h"
 #include "studentSci.h"
+#include "subjectDialog.h"
 
 #include <QPushButton>
 #include <QTextEdit>
@@ -81,6 +82,12 @@ Manager::~Manager()
 
 
 void Manager::openStudentFile() {
+    // 초기화
+    studentArtList.clear();
+    studentSciList.clear();
+    subjectArtList.clear();
+    subjectSciList.clear();
+
     QString fileName = QFileDialog::getOpenFileName(this, "Open File", "", "CSV Files (*.csv);;All Files (*)");
     if (fileName.isEmpty()) {
         return;
@@ -105,7 +112,7 @@ void Manager::openStudentFile() {
 
     // Read the first line to check the header
     QString firstLine = in.readLine();
-    QString expectedHeader = "선택,학번,이름,성별,학과,생년월일,전화번호,주소,선택,학번,이름,";
+    QString expectedHeader = "선택,학번,이름,성별,학과,생년월일,전화번호,주소";
 
     if (!firstLine.startsWith(expectedHeader)) {
         QMessageBox::warning(nullptr, "Invalid File", "유효한 형식의 파일을 선택해주세요.");
@@ -114,11 +121,23 @@ void Manager::openStudentFile() {
     }
 
     QStringList headers = firstLine.split(",");
-    ui->gradeTableWidget->setColumnCount(headers.size() - studentHeaderSize);
 
     // Set headers
-    ui->studentTableWidget->setHorizontalHeaderLabels(headers.mid(0, studentHeaderSize));
-    ui->gradeTableWidget->setHorizontalHeaderLabels(headers.mid(studentHeaderSize, headers.size()));
+    ui->studentTableWidget->setHorizontalHeaderLabels(headers);
+
+    QStringList sartList = in.readLine().split(",");
+    QStringList ssciList = in.readLine().split(",");
+    subjectArtList.append(sartList.toList());
+    subjectSciList.append(ssciList.toList());
+    QStringList gradeHeaders = {"선택", "학번", "이름"};
+    QStringList uniqueList;
+    uniqueList << sartList;
+    uniqueList << ssciList;
+    uniqueList.removeDuplicates();
+    gradeHeaders.append(uniqueList);
+    gradeHeaders.append("평균");
+    ui->gradeTableWidget->setColumnCount(uniqueList.size() + 4);
+    ui->gradeTableWidget->setHorizontalHeaderLabels(gradeHeaders);
 
 
 
@@ -136,8 +155,8 @@ void Manager::openStudentFile() {
             item->setTextAlignment(Qt::AlignCenter);
             ui->studentTableWidget->setItem(rowCount, i, item);
             switch (i) {
-            case 1: student->setId(fields[i].toInt()); break;
-            case 2: student->setName(fields[i]); break;
+            case 1: student->setId(fields[i].toInt());break;
+            case 2: student->setName(fields[i]);break;
             case 3: student->setGender(fields[i]); break;
             case 4: student->setSubject(fields[i]); break;
             case 5: student->setBirthday(fields[i]); break;
@@ -158,11 +177,10 @@ void Manager::openStudentFile() {
             }
         }
 
-        for (int i = studentHeaderSize + 1; i < headers.size(); ++i) {
+        for (int i = studentHeaderSize + 1; i < fields.size(); ++i) {
             QTableWidgetItem* item = new QTableWidgetItem(fields[i]);
             item->setTextAlignment(Qt::AlignCenter);
             ui->gradeTableWidget->setItem(rowCount, i - studentHeaderSize, item);
-
         }
 
         int firstColumn = 0;
@@ -209,17 +227,24 @@ void Manager::saveStudentFile() {
     out.setEncoding(QStringConverter::LastEncoding);
 
     // Write headers
-    QStringList headers;
+    QStringList headers, artHeaders, sciHeaders;
     for (int col = 0; col < ui->studentTableWidget->columnCount(); ++col) {
         headers << ui->studentTableWidget->horizontalHeaderItem(col)->text();
     }
 
-    // Add grade table headers
-    for (int col = 0; col < ui->gradeTableWidget->columnCount(); ++col) {
-        headers << ui->gradeTableWidget->horizontalHeaderItem(col)->text();
-    }
-
     out << headers.join(',') << '\n';
+
+    // 문과 헤더 추가
+    for (int i = 0; i < subjectArtList.size(); ++i) {
+        artHeaders << subjectArtList[i];
+    }
+    out << artHeaders.join(',') << '\n';
+
+    // 이과 헤더 추가
+    for (int i = 0; i < subjectSciList.size(); ++i) {
+        sciHeaders << subjectSciList[i];
+    }
+    out << sciHeaders.join(',') << '\n';
 
     // Write table data
     for (int row = 0; row < ui->studentTableWidget->rowCount(); ++row) {
@@ -422,24 +447,40 @@ void Manager::deleteStudent() {
 
 void Manager::addSubject() {
 
-    bool ok;
-    QString subjectName = QInputDialog::getText(this, tr("과목 추가"),
-                                                tr("과목명 : "), QLineEdit::Normal,
-                                                QString(), &ok);
+    SubjectDialog dialog(this);
+    if (dialog.exec() == QDialog::Accepted) {
+        QString subjectName = dialog.getSubjectName();
+        QString selectedOption = dialog.getSelectedOption();
 
-    if (ok && !subjectName.isEmpty()) {
         int currentColumnCount = ui->gradeTableWidget->columnCount();
         int positionToAdd = currentColumnCount - 1;
 
-        ui->gradeTableWidget->insertColumn(positionToAdd);
-        ui->gradeTableWidget->setHorizontalHeaderItem(positionToAdd, new QTableWidgetItem(subjectName));
+        if (!subjectName.isEmpty()) {
+            ui->gradeTableWidget->insertColumn(positionToAdd);
+            ui->gradeTableWidget->setHorizontalHeaderItem(positionToAdd, new QTableWidgetItem(subjectName));
 
-        int rowCount = ui->gradeTableWidget->rowCount();
-        for (int row = 0; row < rowCount; ++row) {
-            QTableWidgetItem *item = new QTableWidgetItem();
-            item->setTextAlignment(Qt::AlignCenter);
-            ui->gradeTableWidget->setItem(row, positionToAdd, item);
+            int rowCount = ui->gradeTableWidget->rowCount();
+            for (int row = 0; row < rowCount; ++row) {
+                QTableWidgetItem *item = new QTableWidgetItem();
+                item->setTextAlignment(Qt::AlignCenter);
+                ui->gradeTableWidget->setItem(row, positionToAdd, item);
+            }
         }
+
+        if (selectedOption == "문과") {
+            subjectArtList.append(subjectName);
+            if (ui->gradecomboBox->currentText() == "이과")
+                ui->gradeTableWidget->setColumnHidden(positionToAdd, true);
+
+        } else if (selectedOption == "이과") {
+            subjectSciList.append(subjectName);
+            if (ui->gradecomboBox->currentText() == "문과")
+                ui->gradeTableWidget->setColumnHidden(positionToAdd, true);
+        } else {
+            subjectSciList.append(subjectName);
+            subjectArtList.append(subjectName);
+        }
+
     }
 }
 
@@ -730,10 +771,14 @@ void Manager::classifySubject(){
     QString currentText = ui->gradecomboBox->currentText(); //콤보박스 현재텍스트 받아옴
 
     int rowCount = ui->gradeTableWidget->rowCount(); //행수 받아옴
+    int columnCount = ui->gradeTableWidget->columnCount(); // 렬수 받아옴
 
     if(currentText == "전체"){
         for (int row = 0; row < rowCount; ++row){
             ui->gradeTableWidget->setRowHidden(row, false);  //콤보박스가 전체인 경우 행을 하나씩 모두 출력
+        }
+        for (int column = 0; column < columnCount; ++column){
+            ui->gradeTableWidget->setColumnHidden(column, false);  //콤보박스가 전체인 경우 행을 하나씩 모두 출력
         }
     }
     else if(currentText == "문과"){
@@ -747,6 +792,17 @@ void Manager::classifySubject(){
                 }
             }
         }
+
+        for (int column = 3; column < columnCount - 1; ++column) {
+            QString subject = ui->gradeTableWidget->horizontalHeaderItem(column)->text();
+            ui->gradeTableWidget->setColumnHidden(column, true);
+            for (int i = 0; i < subjectArtList.size(); i++) {
+                if (subjectArtList[i] == subject) {
+                    ui->gradeTableWidget->setColumnHidden(column, false);
+                    break;
+                }
+            }
+        }
     }
     else if(currentText == "이과"){
         for (int row = 0; row < rowCount; ++row) {
@@ -755,6 +811,17 @@ void Manager::classifySubject(){
             for (int i = 0; i < studentSciList.size(); i++) {
                 if (studentSciList[i]->getId() == id.toInt()) {
                     ui->gradeTableWidget->setRowHidden(row, false);
+                    break;
+                }
+            }
+        }
+
+        for (int column = 3; column < columnCount - 1; ++column) {
+            QString subject = ui->gradeTableWidget->horizontalHeaderItem(column)->text();
+            ui->gradeTableWidget->setColumnHidden(column, true);
+            for (int i = 0; i < subjectSciList.size(); i++) {
+                if (subjectSciList[i] == subject) {
+                    ui->gradeTableWidget->setColumnHidden(column, false);
                     break;
                 }
             }

@@ -34,6 +34,8 @@ private:
     QList<StudentArt*> studentArtList; // 문과 학생 객체를 저장
     QList<StudentSci*> studentSciList; // 이과 학생 객체를 저장
 
+    QList<QString> subjectArtList; // 문과 과목 저장
+    QList<QString> subjectSciList; // 이과 과목 저장
 
 public slots:
     void openStudentFile();
