@@ -28,11 +28,14 @@ public:
     ~Manager();
     void createMenubar();
 
+    QAction *makeAction(QString icon, QString name, QString toolTip, QObject* recv, const char* slot);
+
 private:
     Ui::Manager *ui;
     QList<StudentArt> studentArtList;
     QList<StudentSci> studentSciList;
     QVector<Student> currentStudent; // 현재 등록된 학생 객체를 저장하는 멤버 변수
+
 
 public slots:
     void openStudentFile();

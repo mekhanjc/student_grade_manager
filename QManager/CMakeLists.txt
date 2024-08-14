@@ -31,6 +31,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         studentSci.h
         printManager.h
         printManager.cpp
+        icon.qrc
 
     )
 # Define target properties for Android with Qt 6 as:

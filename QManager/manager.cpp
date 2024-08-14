@@ -11,6 +11,9 @@
 #include <QInputDialog>
 #include <QMessageBox>
 #include <QCheckBox>
+#include <QToolBar>
+#include <QAction>
+
 
 Manager::Manager(QWidget *parent)
     : QMainWindow(parent)
@@ -56,6 +59,11 @@ Manager::Manager(QWidget *parent)
 
     //성적관리탭 문과 이과 분류
     connect(ui->gradecomboBox, SIGNAL(currentIndexChanged(int)), SLOT(classifySubject()));
+
+    QAction *addStudent = makeAction(":/icons/addStudent.png", "&New", "add new student", this, SLOT(registStudent()));
+
+    QToolBar *fileToolBar = addToolBar("&File");
+    fileToolBar->addAction(addStudent);
 
 
 
@@ -588,14 +596,14 @@ void Manager::showHelp(){
         msgBox.setText("학생관리 도움말\n\n\n"
                        "1. 등록 : '등록' 클릭시 오른쪽 테이블에 학생의 정보가 입력됩니다.\n\n"
                        "2. 삭제 : 체크 표시한 학생을 테이블에서 삭제합니다.\n\n"
-                       "3. 저장하기 : 해당 테이블을 CSV 파일 형식으로 저장합니다.\n\n"
-                       "4. 불러오기 : 저장된 테이블 CSV 파일을 불러옵니다.");
+                       "3. 저장하기 : 해당 테이블을 CSV 파일로 저장합니다.\n\n"
+                       "4. 불러오기 : 저장된 CSV 파일을 테이블로 불러옵니다.");
     }
     else if(button == ui->helppushButton_2){
         msgBox.setWindowTitle("성적관리탭 도움말");
         msgBox.setText("성적관리 도움말\n\n\n"
-                       "1. 과목추가/삭제 : 테이블에 과목을 추가합니다.\n\n"
-                       "2. 학생검색 : 테이블에서 입력된 이름의 학생을 검색합니다.\n\n"
+                       "1. 과목추가/삭제 : 테이블에 과목 칼럼을 추가합니다.\n\n"
+                       "2. 학생검색 : 입력된 학생을 테이블에서 검색합니다.\n\n"
                        "3. 성적삭제 : 해당 테이블에 입력된 학생들의 정보를 CSV파일 형식으로 저장합니다.\n\n"
                        "4. 전체삭제 : 테이블 전체의 데이터를 삭제합니다..\n\n"
                        "5. 불러오기 : 저장된 테이블 CSV 파일을 불러옵니다.\n\n"
@@ -605,7 +613,7 @@ void Manager::showHelp(){
     else if(button == ui->helppushButton_3){
         msgBox.setWindowTitle("성적표출력탭 도움말");
         msgBox.setText("성적표출력 도움말\n\n\n"
-                       "1. 이름검색 : 출력하고자 하는 학생의 이름을 검색해주세요.\n\n"
+                       "1. 이름검색 : 출력할 학생정보를 불러옵니다.\n\n"
                        "2. 출력하기 : 현재 테이블을 출력합니다.");
 
     } else {
@@ -677,6 +685,14 @@ void Manager::classifySubject(){
             }
         }
     }
-    for(int i=0;i<currentStudent.size();++i)
-        qDebug() << currentStudent[i].getSubject();
  }
+
+QAction *Manager::makeAction(QString icon, QString name, QString toolTip, QObject* recv, const char* slot)
+{
+    QAction *act = new QAction(name, this);
+    if(icon.length( ))
+        act->setIcon(QIcon(icon));
+    act->setStatusTip(toolTip);
+    connect(act, SIGNAL(triggered()), recv, slot);
+    return act;
+}
