@@ -1,15 +1,54 @@
-#include "printmanager.h"
+#include "printManager.h"
 
 #include <QFile>
 #include <QPainter>
 #include <QTableWidget>
+#include <QTabWidget>
+#include <QVBoxLayout>
 #include <QHeaderView>
 #include <QtPrintSupport/QPrintDialog>
 #include <QtPrintSupport/QPrinter>
+#include <QtPrintSupport/QPrintPreviewWidget>
+
 
 PrintManager::PrintManager(QObject *parent)
     : QObject(parent) {
 }
+
+void PrintManager::printPreviewTable(QTableWidget *tableWidget, QFrame *frame) {
+    QPrinter *printer = new QPrinter(QPrinter::HighResolution);
+    printer->setFullPage(true); // Use full page for preview
+
+    // Create a print preview widget
+    QPrintPreviewWidget *previewWidget = new QPrintPreviewWidget(printer, nullptr);
+
+    // Connect the paintRequested signal to a lambda that performs printing
+    connect(previewWidget, &QPrintPreviewWidget::paintRequested, [=]() {
+        print(*printer, tableWidget);
+        // Render the table widget content to the printer
+    });
+
+    // Get the existing layout from the frame
+    QLayout *existingLayout = frame->layout();
+
+    // If there is an existing layout, clear it and delete its items
+    if (existingLayout) {
+        QLayoutItem *item;
+        while ((item = existingLayout->takeAt(0)) != nullptr) {
+            QWidget *widget = item->widget();
+            if (widget) {
+                delete widget;
+            }
+            delete item;
+        }
+        delete existingLayout;
+    }
+
+    QVBoxLayout *layout = new QVBoxLayout(frame);
+    frame->setLayout(layout);
+    layout->addWidget(previewWidget);
+}
+
 
 void PrintManager::printTable(QTableWidget *tableWidget) {
     QPrinter printer(QPrinter::HighResolution);
@@ -20,6 +59,7 @@ void PrintManager::printTable(QTableWidget *tableWidget) {
         print(printer, tableWidget);
     }
 }
+
 
 void PrintManager::print(QPrinter &printer, QTableWidget *tableWidget) {
 
@@ -55,7 +95,7 @@ void PrintManager::print(QPrinter &printer, QTableWidget *tableWidget) {
     int headerY = y;
     if (header) {
         QStringList headerLabels;
-        for (int i = 0; i < header->count(); ++i) {
+        for (int i = 1; i < header->count(); ++i) {
             headerLabels << header->model()->headerData(i, Qt::Horizontal).toString();
         }
 

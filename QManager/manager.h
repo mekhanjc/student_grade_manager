@@ -32,9 +32,10 @@ public:
 
 private:
     Ui::Manager *ui;
-    QList<StudentArt> studentArtList;
-    QList<StudentSci> studentSciList;
-    QVector<Student> currentStudent; // 현재 등록된 학생 객체를 저장하는 멤버 변수
+    QVector<Student*> studentList; // 등록된 학생 객체를 저장하는 멤버 변수
+
+    QVector<QString> artSubjectList; // 문과 과목 저장
+    QVector<QString> sciSubjectList; // 이과 과목 저장
 
 
 public slots:

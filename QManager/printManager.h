@@ -9,8 +9,8 @@ class PrintManager : public QObject {
 
 public:
     explicit PrintManager(QObject *parent = nullptr);
-
     void printTable(QTableWidget *tableWidget);
+    void printPreviewTable(QTableWidget *tableWidget, QFrame *frame);
 
 private:
     void print(QPrinter &printer, QTableWidget *tableWidget);
