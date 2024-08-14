@@ -533,7 +533,7 @@ text-align: center;</string>
        <string>해당학생의 성적을 삭제합니다.</string>
       </property>
       <property name="text">
-       <string>성적 수정</string>
+       <string>성적 입력</string>
       </property>
      </widget>
      <widget class="QPushButton" name="disableInputButton">
@@ -549,7 +549,7 @@ text-align: center;</string>
        <string>해당학생의 성적을 삭제합니다.</string>
       </property>
       <property name="text">
-       <string>수정 완료</string>
+       <string>입력 완료</string>
       </property>
      </widget>
     </widget>
