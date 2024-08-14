@@ -518,6 +518,7 @@ void Manager::searchStudent() {
     QString studentName = QInputDialog::getText(this, tr("학생 이름 검색"),
                                                 tr("이름 : "), QLineEdit::Normal,
                                                 QString(), &ok);
+    ui->gradecomboBox->setCurrentIndex(0);
 
     int rowCount = ui->gradeTableWidget->rowCount();
     if (ok && !studentName.isEmpty()) {
