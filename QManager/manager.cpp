@@ -29,6 +29,7 @@ Manager::Manager(QWidget *parent)
     ui->gradeTableWidget->setColumnWidth(0, 10);
 
     ui->studentTableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->gradeTableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
 
 
@@ -657,8 +658,8 @@ void Manager::showHelp(){
                        "1. 과목추가/삭제 : 테이블에 과목 칼럼을 추가합니다.\n\n"
                        "2. 학생검색 : 입력된 학생을 테이블에서 검색합니다.\n\n"
                        "3. 성적삭제 : 체크된 학생들의 성적을 삭제합니다\n\n"
-                       "4. 성적수정 : 테이블에서 직접 성적수정이 가능합니다.\n\n"
-                       "4. 수정완료 : 테이블에서 직접 성적수정을 차단합니다.\n\n"
+                       "4. 성적입력 : 테이블에서 직접 성적수정이 가능합니다.\n\n"
+                       "4. 입력완료 : 테이블에서 직접 성적수정을 차단합니다.\n\n"
                        "4. 불러오기 : 저장된 테이블 CSV 파일을 불러옵니다.\n\n"
                        "5. 저장하기 : 해당 테이블을 CSV 파일 형식으로 저장합니다.\n");
     }
@@ -765,7 +766,7 @@ void Manager::enableTableWidgetEditing(){
     QMessageBox msgBox;
     msgBox.setStyleSheet("QPushButton { width: 1px; height: 1px; }");  // 메시지박스 버튼 크기 조정
     msgBox.setWindowTitle("알림");
-    msgBox.setText("이제부터 테이블에서 직접 성적 수정이 가능합니다.\n");
+    msgBox.setText("이제부터 테이블에서 직접 성적 입력이 가능합니다.\n");
     msgBox.exec();
     ui->gradeTableWidget->setEditTriggers(QAbstractItemView::AllEditTriggers);
 }
@@ -773,7 +774,7 @@ void Manager::disableTableWidgetEditing(){
     QMessageBox msgBox;
     msgBox.setStyleSheet("QPushButton { width: 1px; height: 1px; }");  // 메시지박스 버튼 크기 조정
     msgBox.setWindowTitle("알림");
-    msgBox.setText("이제부터 테이블에서 직접 성적 수정을 차단합니다.\n");
+    msgBox.setText("이제부터 테이블에서 직접 성적 입력을 차단합니다.\n");
     msgBox.exec();
     ui->gradeTableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
 }
