@@ -39,8 +39,8 @@ public:
     QString getPhoneNumber();
     void setAddress(QString);
     QString getAddress();
-    void setavgScore(double avgScore);
-    double getavgScore();
+    virtual void setavgScore(double avgScore);
+    virtual double getavgScore();
 
 };
 
