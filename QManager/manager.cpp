@@ -4,7 +4,6 @@
 #include "printManager.h"
 #include "studentArt.h"
 #include "studentSci.h"
-#include "subjectDialog.h"
 
 #include <QPushButton>
 #include <QTextEdit>
@@ -66,7 +65,8 @@ Manager::Manager(QWidget *parent)
     });
 
 
-    //connect(ui->, SIGNAL(clicked()), SLOT(showHelp()));
+    connect(ui->enableInputButton, SIGNAL(clicked()), this, SLOT(enableTableWidgetEditing()));
+    connect(ui->disableInputButton, SIGNAL(clicked()), this, SLOT(disableTableWidgetEditing()));
 
 
     ui->helppushButton_1->setIcon(QIcon(":/icons/help.png"));
@@ -641,36 +641,35 @@ void Manager::showHelp(){
 
     QPushButton *button = qobject_cast<QPushButton*>(sender());
     QMessageBox msgBox;
-
-
-    //msgBox.setStyleSheet("QMessageBox QLabel { font-family: 'Malgun Gothic'; font-size: 14px;  }");
     msgBox.setStyleSheet("QPushButton { width: 10px; height: 5px; }");  // 메시지박스 버튼 크기 조정
 
     if (button == ui->helppushButton_1) {
         msgBox.setWindowTitle("학생관리탭 도움말");
-        msgBox.setText("학생관리 도움말\n\n\n"
+        msgBox.setText("학생관리 도움말\n\n"
                        "1. 등록 : 오른쪽 테이블에 학생의 정보가 입력됩니다.\n\n"
                        "2. 삭제 : 체크 표시한 학생을 테이블에서 삭제합니다.\n\n"
                        "3. 저장하기 : 해당 테이블을 CSV 파일로 저장합니다.\n\n"
-                       "4. 불러오기 : 저장된 CSV 파일을 테이블로 불러옵니다.");
+                       "4. 불러오기 : 저장된 CSV 파일을 테이블로 불러옵니다.\n");
     }
     else if(button == ui->helppushButton_2){
         msgBox.setWindowTitle("성적관리탭 도움말");
-        msgBox.setText("성적관리 도움말\n\n\n"
+        msgBox.setText("성적관리 도움말\n\n"
                        "1. 과목추가/삭제 : 테이블에 과목 칼럼을 추가합니다.\n\n"
                        "2. 학생검색 : 입력된 학생을 테이블에서 검색합니다.\n\n"
                        "3. 성적삭제 : 체크된 학생들의 성적을 삭제합니다\n\n"
+                       "4. 성적수정 : 테이블에서 직접 성적수정이 가능합니다.\n\n"
+                       "4. 수정완료 : 테이블에서 직접 성적수정을 차단합니다.\n\n"
                        "4. 불러오기 : 저장된 테이블 CSV 파일을 불러옵니다.\n\n"
-                       "5. 저장하기 : 해당 테이블을 CSV 파일 형식으로 저장합니다.");
+                       "5. 저장하기 : 해당 테이블을 CSV 파일 형식으로 저장합니다.\n");
     }
     else if(button == ui->helppushButton_3){
         msgBox.setWindowTitle("성적표출력탭 도움말");
-        msgBox.setText("성적표출력 도움말\n\n\n"
-                       "1. 출력하기 : 프리뷰 테이블 그대로 출력합니다..\n\n");
+        msgBox.setText("성적표출력 도움말\n\n"
+                       "1. 출력하기 : 프리뷰 테이블 그대로 출력합니다.\n");
 
     } else {
         msgBox.setWindowTitle("도움말");
-        msgBox.setText("각 탭의 도움말 버튼을 클릭하세요.");
+        msgBox.setText("각 탭의 도움말 버튼을 클릭하세요.\n");
     }
 
     msgBox.exec();
@@ -762,5 +761,20 @@ void Manager::classifySubject(){
         }
     }
  }
-
+void Manager::enableTableWidgetEditing(){
+    QMessageBox msgBox;
+    msgBox.setStyleSheet("QPushButton { width: 1px; height: 1px; }");  // 메시지박스 버튼 크기 조정
+    msgBox.setWindowTitle("알림");
+    msgBox.setText("이제부터 테이블에서 직접 성적 수정이 가능합니다.\n");
+    msgBox.exec();
+    ui->gradeTableWidget->setEditTriggers(QAbstractItemView::AllEditTriggers);
+}
+void Manager::disableTableWidgetEditing(){
+    QMessageBox msgBox;
+    msgBox.setStyleSheet("QPushButton { width: 1px; height: 1px; }");  // 메시지박스 버튼 크기 조정
+    msgBox.setWindowTitle("알림");
+    msgBox.setText("이제부터 테이블에서 직접 성적 수정을 차단합니다.\n");
+    msgBox.exec();
+    ui->gradeTableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+}
 

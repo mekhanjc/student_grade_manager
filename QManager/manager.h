@@ -53,5 +53,10 @@ public slots:
 
     void showHelp();
     void classifySubject();
+
+    void enableTableWidgetEditing();
+    void disableTableWidgetEditing();
+
+
 };
 #endif // MAINWINDOW_H
