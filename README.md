@@ -41,6 +41,7 @@
 ![tab1view](https://github.com/user-attachments/assets/11c960ee-538a-4a2f-8e86-86f638a60188)
 - 학생관리탭 화면입니다.
 - 학생정보를 등록,삭제, 파일로 저장 및 불러오기 가능합니다.
+- 테이블의 헤더클릭시 정렬기능과 전체체크, 해제 기능 구현했습니다.
   
 ![image](https://github.com/user-attachments/assets/9a4bd660-5ec6-4f29-8147-0b0a54445e2f)
 - 성적관리탭 화면입니다.
